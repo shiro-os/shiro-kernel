@@ -76,7 +76,9 @@ My main technologies I use for the development are:
     - in our bootloader_main.asm file we include subroutines below the hang because we need to make sure the parameters are ready
 
     [Show what bootsector_main.asm looked like at that time](https://github.com/NLDev/Shiro/blob/4b3756752964452577edd7fce7d14846952a3836/bootsector/bootsector_main.asm)
+
     [Show what bootsector_print.asm looked like at that time](https://github.com/NLDev/Shiro/blob/4b3756752964452577edd7fce7d14846952a3836/bootsector/bootsector_print.asm)
+    
     [Show what build.sh looked like at that time](https://github.com/NLDev/Shiro/blob/4b3756752964452577edd7fce7d14846952a3836/build.sh)
 
 <hr>
