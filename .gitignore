@@ -1,0 +1,9 @@
+*.so
+*.a
+*.o
+*.iso
+*.efi
+*.bin
+.gdb_history
+
+/.make/*
