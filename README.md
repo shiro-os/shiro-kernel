@@ -39,13 +39,13 @@ My main technologies I use for the development are:
 - Qemu as my Type 2 Hypervisor / Emulator 
 - VSCode as my IDE 
 
-- [1](#doc-1) **Boot Sector**: <br>
+- [1.](#doc-1) - **Boot Sector**: <br>
     The first step is to tell the bootloader that Shiro is an OS and that it's bootable. I did this by writing a small NASM code which compiles to a binary.
     - First we create an infinite loop
     - Then we fill the boot sector (512 bytes)
     - And finally end the binary with the 16-Bit magic number `0xAA55`
 
-- [2](#doc-2) **Build script**: <br>
+- [2.](#doc-2) - **Build script**: <br>
     Second step and we already have to write a build script. The boot sector code is written in NASM. So we need to compile a binary out of it first.
     - Create a directory to store our binaries
     - Compile binary with `$ nasm -f bin ./boot_sector.asm -o ./bin/boot_sector.bin`
