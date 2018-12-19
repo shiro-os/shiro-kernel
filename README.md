@@ -58,6 +58,8 @@ My main technologies I use for the development are:
 - [3.](#doc-3) - **Enter TTY Mode in Boot Sector**: <br>
     We will enter TTY mode in the boot sector and output our Kernel name.
 
+    - We use `0x0E` on `ah` to tell the video interrupt that we want to write the content of `al` (lower part of the `ax` register) in TTY mode.
+
     [Show what the file looked like at that time](https://github.com/NLDev/Shiro/blob/f565a18e994d0c92b0708f12e50313db47016c30/boot_sector.asm)
 
 <hr>
