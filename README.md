@@ -33,11 +33,11 @@ I wanted to learn a bit about kernel development. And that's basically the whole
 
 My main technologies I use for the development are: 
 
-- NASM for Bootloader stuff 
-- C for the Kernel itself 
-- Bash for build scripts
-- Qemu as my Type 2 Hypervisor / Emulator 
-- VSCode as my IDE 
+> - NASM for Bootloader stuff 
+> - C for the Kernel itself 
+> - Bash for build scripts
+> - Qemu as my Type 2 Hypervisor / Emulator 
+> - VSCode as my IDE 
 
 - [1.](#doc-1) - **Boot Sector**: <br>
     The first step is to tell the bootloader that Shiro is an OS and that it's bootable. I did this by writing a small NASM code which compiles to a binary.
