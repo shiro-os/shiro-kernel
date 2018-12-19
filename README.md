@@ -45,4 +45,10 @@ My main technologies I use for the development are:
     - Then we fill the boot sector (512 bytes)
     - And finally end the binary with the 16-Bit magic number `0xAA55`
 
+- [2](#doc-2) **Build script**: <br>
+    Second step and we already have to write a build script. The boot sector code is written in NASM. So we need to compile a binary out of it first.
+    - Create a directory to store our binaries
+    - Compile binary with `$ nasm -f bin ./boot_sector.asm -o ./bin/boot_sector.bin`
+    - Launch the Kernel with `$ qemu-system-x86_64 ./bin/boot_sector.bin`
+
 <hr>
