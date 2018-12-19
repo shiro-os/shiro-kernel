@@ -45,10 +45,19 @@ My main technologies I use for the development are:
     - Then we fill the boot sector (512 bytes)
     - And finally end the binary with the 16-Bit magic number `0xAA55`
 
+    [Show what the file looked like at that time](https://github.com/NLDev/Shiro/blob/27f209a5021869bc94f20d1009bbe37fb0ab098c/boot_sector.asm)
+
 - [2.](#doc-2) - **Build script**: <br>
     Second step and we already have to write a build script. The boot sector code is written in NASM. So we need to compile a binary out of it first.
     - Create a directory to store our binaries
     - Compile binary with `$ nasm -f bin ./boot_sector.asm -o ./bin/boot_sector.bin`
     - Launch the Kernel with `$ qemu-system-x86_64 ./bin/boot_sector.bin`
+
+    [Show what the file looked like at that time](https://github.com/NLDev/Shiro/blob/01659dcd4fb1b45add9aeb3a5ffdbd8263e5cbca/build.sh)
+
+- [3.](#doc-3) - **Enter TTY Mode in Boot Sector**: <br>
+    We will enter TTY mode in the boot sector and output our Kernel name.
+
+    [Show what the file looked like at that time](https://github.com/NLDev/Shiro/blob/f565a18e994d0c92b0708f12e50313db47016c30/boot_sector.asm)
 
 <hr>
