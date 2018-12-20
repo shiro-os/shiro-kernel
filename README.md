@@ -19,11 +19,15 @@ The name "Shiro" itself is the Japanese word for "white" written in [Romaji](htt
 
 I wanted to learn a bit about kernel development. And that's basically the whole purpose of this project/repository.
 
+> **IMPORTANT:** This is a WIP and doesn't do anything yet! Also im a C & NASM rookie and probably don't know whatI am doing. 
+
 <hr>
 
 ## :wrench: Setup
 
 -- Comming Soon --
+
+(for now you only need the tools mentioned in [Documentation](#clipboard-documentation) and launch it by starting `build.sh`)
 
 <hr>
 
