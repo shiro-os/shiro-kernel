@@ -81,4 +81,30 @@ My main technologies I use for the development are:
     
     [Show what build.sh looked like at that time](https://github.com/NLDev/Shiro/blob/4b3756752964452577edd7fce7d14846952a3836/build.sh)
 
+- [5.](#doc-5) - **Switch to 16Bit Real- and 32Bit protected mode**: <br>
+    We will switch to 16bit real mode and then to 32bit protected mode right after. 
+
+    - First we need a couple of helper functions such as an Global Descriptor Table (GDT) and a print function for 32bit
+    - We start with printing. This is the first time we need to use 32bit registers. Also we now have protected and virtual memory. However, there are no more BIOS interrupts anymore. Thats why we need a GDT later.
+    - We print strings by directly writing to the VGA memory.
+    - Printing is almost the same as on interrupts. We iterate over the string and check if we reached the last char (null).
+    - Now for the GDT: Segmentation works differently in 32bit. Now, the offset becomes an index to a segment descriptor (SD) in the GDT.
+    - I tried to made it as simple as possible and have only two segments: one for the code and one for the data. 
+    - There were a couple of oddities that I didn't understand at first:
+        - GDT nees to start with 0x00 (null 8-byte or two times 4 bytes in ASM) - apparently to clear the managed addresses (?)
+        - We can't directly load the GDT. We need a so called GDT descriptor
+    - Basically, for this step I look up all flags in the [os-dev PDF](https://www.cs.bham.ac.uk/~exr/lectures/opsys/10_11/lectures/os-dev.pdf)
+    - Now we want to finally switch to 32bit. For that we...
+        - Disable interrupts
+        - Load our GDT
+        - Set a bit on the CPU control register cr0
+        - Flush the CPU pipelinewith a far jump
+        - Update all the segment registers
+        - Update the stack
+    - We disable interrupts with `cli`
+    - We load our GDT with the GDT descriptor by using `lgdt [gdt_descriptor]`
+    - Then we set 32 bit mode in the `cr0` by using `or eax, 0x1`
+
+    [Show what boot_sector.asm looked like at that time](https://github.com/NLDev/Shiro/blob/1b660402f782ff308b6b984ac68374b337e92407/bootsector/bootsector_main.asm)
+
 <hr>
