@@ -43,6 +43,7 @@ My main technologies I use for the development are:
 > - Qemu as my Type 2 Hypervisor / Emulator 
 > - VSCode as my IDE 
 
+<a name="doc-1"></a>
 - [1.](#doc-1) - **Boot Sector**: <br>
     The first step is to tell the bootloader that Shiro is an OS and that it's bootable. I did this by writing a small NASM code which compiles to a binary.
     - First we create an infinite loop
@@ -51,6 +52,7 @@ My main technologies I use for the development are:
 
     [Show what boot_sector.asm looked like at that time](https://github.com/NLDev/Shiro/blob/27f209a5021869bc94f20d1009bbe37fb0ab098c/boot_sector.asm)
 
+<a name="doc-2"></a>
 - [2.](#doc-2) - **Build script**: <br>
     Second step and we already have to write a build script. The boot sector code is written in NASM. So we need to compile a binary out of it first.
     - Create a directory to store our binaries
@@ -59,6 +61,7 @@ My main technologies I use for the development are:
 
     [Show what build.sh looked like at that time](https://github.com/NLDev/Shiro/blob/01659dcd4fb1b45add9aeb3a5ffdbd8263e5cbca/build.sh)
 
+<a name="doc-3"></a>
 - [3.](#doc-3) - **Enter TTY Mode in Boot Sector**: <br>
     We will enter TTY mode in the boot sector and output our Kernel name.
 
@@ -66,6 +69,7 @@ My main technologies I use for the development are:
 
     [Show what boot_sector.asm looked like at that time](https://github.com/NLDev/Shiro/blob/f565a18e994d0c92b0708f12e50313db47016c30/boot_sector.asm)
 
+<a name="doc-4"></a>
 - [4.](#doc-4) - **Splitting into functions**: <br>
     No we will try to split our boot sector into multiple functions. For instance we want to have a print function. Some notes:
 
@@ -85,6 +89,7 @@ My main technologies I use for the development are:
     
     [Show what build.sh looked like at that time](https://github.com/NLDev/Shiro/blob/4b3756752964452577edd7fce7d14846952a3836/build.sh)
 
+<a name="doc-5"></a>
 - [5.](#doc-5) - **Switch to 16Bit Real- and 32Bit protected mode**: <br>
     We will switch to 16bit real mode and then to 32bit protected mode right after. 
 
