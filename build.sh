@@ -9,6 +9,6 @@ printf "Compiling boot sector NASM...\n"
 nasm -f bin ./bootsector/bootsector_main.asm -o ./bin/boot_sector.bin
 
 printf "Launching Kernel...\n"
-qemu-system-x86_64 ./bin/boot_sector.bin
+qemu-system-x86_64 -fda ./bin/boot_sector.bin -boot c
 
 exit 0

@@ -1,18 +1,37 @@
 [org 0x7c00]
+    mov bp, 0x9000
+    mov sp, bp
 
-mov bx, LOAD
-call print
+    call print_nl
+    call print_nl
 
-call print_nl
+    mov bx, LOAD
+    call print
+    call print_nl
 
-mov dx, 0x12fe
+    mov bx, MSG_REAL_MODE
+    call print
 
-jmp $
+    call switch_to_pm
+    
+    jmp $
 
 %include "bootsector/bootsector_print.asm"
+%include "init32/32bit_gdt.asm"
+%include "init32/32bit_print.asm"
+%include "init32/32bit_switch.asm"
 
 LOAD:
-    db 'Initiating Shiro Kernel...', 0
+    db '[INFO]  - Initiating Shiro Kernel...', 0
+
+[bits 32]
+    BEGIN_PM:
+        mov ebx, MSG_PROT_MODE
+        call print_string_pm
+        jmp $
+
+MSG_REAL_MODE db "[INFO]  - Started Shiro in 16-bit real mode", 0
+MSG_PROT_MODE db "[INFO]  - Loaded Shiro 32-bit protected mode", 0
 
 times 510-($-$$) db 0
 dw 0xaa55
