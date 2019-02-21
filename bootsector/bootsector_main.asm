@@ -2,7 +2,8 @@
     mov bp, 0x9000
     mov sp, bp
 
-    call print_nl
+    call cls
+
     call print_nl
 
     mov bx, LOAD
