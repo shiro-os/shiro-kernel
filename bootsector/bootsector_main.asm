@@ -14,7 +14,7 @@
     call print
 
     call switch_to_pm
-    
+
     jmp $
 
 %include "bootsector/bootsector_print.asm"
