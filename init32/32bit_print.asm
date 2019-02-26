@@ -26,13 +26,13 @@ print_string_pm:
     mov ah, WHITE_ON_BLACK
 
     cmp al, 0
-    je print_string_pm_done
+    je .print_string_pm_done
 
     mov [edx], ax
     add ebx, 1
     add edx, 2
 
-    jmp print_string_pm_loop
+    jmp .print_string_pm_loop
 
 .print_string_pm_done:
     inc byte [OFFSET_COUNT]
