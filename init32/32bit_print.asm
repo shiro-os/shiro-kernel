@@ -2,7 +2,6 @@
 
 WHITE_ON_BLACK equ 0x0f       ; First Num = Background; Second Num = Foregrund
 
-LINE_OFFSET db 0xA0           ; Magic
 OFFSET_COUNT db 0x03          ; Start at the third line
 
 print_string_pm:
@@ -13,7 +12,7 @@ print_string_pm:
     push eax
     push ebx
 
-    movzx eax, byte [LINE_OFFSET]
+    mov eax, LINE_WIDTH
     movzx ebx, byte [OFFSET_COUNT]
     imul eax, ebx
     add edx, eax

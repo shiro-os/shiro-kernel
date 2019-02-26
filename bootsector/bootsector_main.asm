@@ -17,8 +17,10 @@
 
     jmp $
 
+%include "bootsector/constants.asm"
 %include "bootsector/bootsector_print.asm"
 %include "init32/32bit_gdt.asm"
+%include "init32/32bit_setchar.asm"
 %include "init32/32bit_print.asm"
 %include "init32/32bit_switch.asm"
 
