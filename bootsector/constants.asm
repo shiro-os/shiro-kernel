@@ -1,0 +1,1 @@
+VIDEO_MEMORY equ 0xb8000
