@@ -5,7 +5,7 @@ print_hex:
 hex_loop:
     cmp cx, 4
     je end
-    
+
     mov ax, dx
     and ax, 0x000f
     add al, 0x30
@@ -23,9 +23,6 @@ step2:
     jmp hex_loop
 
 end:
-    mov bx, HEX_OUT
-    call print
-
     popa
     ret
 
@@ -53,17 +50,7 @@ disk_load:
     ret
 
 disk_error:
-    mov bx, DISK_ERROR
-    call print
-    call print_nl
-    mov dh, ah
-    call print_hex
-    jmp disk_loop
-
 sect_error:
-    mov bx, SECT_ERROR
-    call print
-
 disk_loop:
     jmp $
 

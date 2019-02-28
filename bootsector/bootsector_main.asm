@@ -1,31 +1,20 @@
 [org 0x7c00]
     KERNEL_OFFSET equ 0x1000
-    mov [BOOT_DRIVE], dl 
+    mov [BOOT_DRIVE], dl
 
     mov bp, 0x9000
     mov sp, bp
 
     call cls
-
-    call print_nl
-
-    mov bx, LOAD
-    call print
-    call print_nl
-
-    mov bx, MSG_LOAD_16BITS
-    call print
-
     call load_kernel
     call switch_to_pm
 
     jmp $
 
 %include "bootsector/constants.asm"
-%include "bootsector/bootsector_print.asm"
 %include "bootsector/bootsector_disk.asm"
+%include "bootsector/bootsector_cls.asm"
 %include "init32/32bit_gdt.asm"
-%include "init32/32bit_setchar.asm"
 %include "init32/32bit_print.asm"
 %include "init32/32bit_switch.asm"
 
@@ -34,10 +23,6 @@ LOAD:
 
 [bits 16]
     load_kernel:
-        mov bx, MSG_LOAD_KERNEL
-        call print
-        call print_nl
-
         mov bx, KERNEL_OFFSET
         mov dh, 2
         mov dl, [BOOT_DRIVE]
@@ -51,9 +36,6 @@ LOAD:
         call KERNEL_OFFSET
         jmp $
 
-[extern main]
-    call main
-    jmp $
 
 BOOT_DRIVE db 0
 
