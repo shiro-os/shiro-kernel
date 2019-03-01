@@ -1,0 +1,17 @@
+Colors: 
+0 Black; 
+1 Blue;
+2 Green; 
+3 Aqua; 
+4 Red; 
+5 Pink; 
+6 Brown; 
+7 Light Gray;
+8 Dark Gray; 
+9 Light Blue; 
+A Light Green; 
+B Light Aqua; 
+C Light Red; 
+D Light Pink; 
+E Yellow; 
+F White;
