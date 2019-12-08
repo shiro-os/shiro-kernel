@@ -6,10 +6,12 @@ function cleanup() {
 }
 
 function compileKernel() {
+    printf "\e[33m Compiling Kernel... [step: kernel_ep.asm] \e[0m\n"
+    nasm -f elf64 ./kernel/kernel_ep.asm -o ./bin/kernel_ep.elf.bin
     printf "\e[33m Compiling Kernel... [step: kernel.c] \e[0m\n"
-    g++ ./kernel/kernel.c -ffreestanding -c -o ./bin/kernel.o
-    printf "\e[1;33m Compiling Kernel... [step: ld; offset: 0x1000] \e[0m\n"
-    ld -Ttext 0x1000 ./bin/kernel.o -o ./bin/kernel.bin --oformat binary
+    gcc ./kernel/kernel.c -ffreestanding -m64 -O0 -c -o ./bin/kernel.o
+    printf "\e[33m Compiling Kernel... [step: linking; offset: 0x1000] \e[0m\n"
+    ld -nostdlib -nodefaultlibs -Tlink.ld ./bin/kernel_ep.elf.bin ./bin/kernel.o -o./bin/kernel.bin
 }
 
 function compileBootsector() {
@@ -23,7 +25,7 @@ function createImage() {
 }
 
 function launch() {
-    printf "\e[33m Launching Bootloader... \e[0m\n"
+    printf "\e[33m Launching VM... \e[0m\n"
     qemu-system-x86_64 -fda ./bin/boot.bin -boot c
 }
 

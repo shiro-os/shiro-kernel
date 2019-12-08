@@ -31,17 +31,17 @@ LOAD:
 
 [bits 32]
     BEGIN_PM:
-        mov ebx, MSG_LOAD_32BITS
+        mov ebx, MSG_LOAD_KERNEL
         call print_string_pm
         call KERNEL_OFFSET
-        jmp $
+        mov ebx, MSG_EXEC_KERNEL
+        call print_string_pm
 
 
 BOOT_DRIVE db 0
 
-MSG_LOAD_16BITS db "[INFO]  - Started Shiro in 16-bit real mode", 0
-MSG_LOAD_32BITS db "[INFO]  - Loaded Shiro 32-bit protected mode", 0
 MSG_LOAD_KERNEL db "[INFO]  - Loading kernel into memory", 0
+MSG_EXEC_KERNEL db "[INFO] - Kernel execution was finished", 0
 
 times 510-($-$$) db 0
 dw 0xaa55
