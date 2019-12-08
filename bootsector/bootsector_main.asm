@@ -36,6 +36,7 @@ LOAD:
         call KERNEL_OFFSET
         mov ebx, MSG_EXEC_KERNEL
         call print_string_pm
+        jmp $
 
 
 BOOT_DRIVE db 0
