@@ -15,11 +15,17 @@ function compileKernel() {
     # -O0: Disable all Optimizations
     # -c: Don't Link
     gcc ./kernel/kernel.c -ffreestanding -O0 -m64 -c -o./bin/kernel.o
+    printf "\e[33m Compiling Kernel... [step: math.c] \e[0m\n"
+    gcc ./kernel/math.c -ffreestanding -O0 -m64 -c -o./bin/math.o
+    printf "\e[33m Compiling Kernel... [step: util.c] \e[0m\n"
+    gcc ./kernel/util.c -ffreestanding -O0 -m64 -c -o./bin/util.o
+    printf "\e[33m Compiling Kernel... [step: condraw.c] \e[0m\n"
+    gcc ./kernel/condraw.c -ffreestanding -O0 -m64 -c -o./bin/condraw.o
     printf "\e[33m Compiling Kernel... [step: linking] \e[0m\n"
     # -nostdlib: Don't include stdlib
     # -nodefaultlib: Skip default libs
     # -T link.ld: Run Linkerscript 'link.ld'
-    ld -nostdlib -nodefaultlibs -Tlink.ld ./bin/kernel_ep.elf.bin ./bin/kernel.o -o./bin/kernel.bin
+    ld -nostdlib -nodefaultlibs -Tlink.ld ./bin/kernel_ep.elf.bin ./bin/kernel.o ./bin/math.o ./bin/util.o ./bin/condraw.o -o./bin/kernel.bin
 }
 
 function compileBootsector() {

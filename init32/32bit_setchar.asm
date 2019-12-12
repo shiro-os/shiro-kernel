@@ -10,10 +10,10 @@ setchar:
     pusha
 
 .setchar_calcoffset:
-    movzx edx, byte [ebx+2]
-    movzx eax, byte [ebx+3]
-    imul edx, 2             ; Multiply by 2 because of Color-Bytes
-    imul eax, LINE_WIDTH    ; Multiply Y-Offset by Screen-Width
+    movzx edx, byte [ebx+2] ; X
+    movzx eax, byte [ebx+3] ; Y
+    imul edx, 2             ; Multiply X by 2 because of Color-Bytes
+    imul eax, LINE_WIDTH    ; Multiply Y by Screen-Width
     add edx, eax            ; Add Y-Offset to X-Offset
 
 .setchar_main:
