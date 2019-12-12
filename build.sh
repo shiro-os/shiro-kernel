@@ -6,20 +6,20 @@ function cleanup() {
 }
 
 function compileKernel() {
-    printf "\e[33m Compiling Kernel... [step: kernel_ep.asm] \e[0m\n"
+    printf "\e[33m Compiling Kernel... [step: compiling; file: kernel_ep.asm] \e[0m\n"
     # -f: Format, compile as elf64 image so we can merge the header with our C Kernel
     nasm -felf64 ./kernel/kernel_ep.asm -o./bin/kernel_ep.elf.bin
-    printf "\e[33m Compiling Kernel... [step: kernel.c] \e[0m\n"
+    printf "\e[33m Compiling Kernel... [step: compiling; file: kernel.c] \e[0m\n"
     # -ffreestanding: Don't link standard library
     # -m64: Compile as 64bit image
     # -O0: Disable all Optimizations
     # -c: Don't Link
     gcc ./kernel/kernel.c -ffreestanding -O0 -m64 -c -o./bin/kernel.o
-    printf "\e[33m Compiling Kernel... [step: math.c] \e[0m\n"
+    printf "\e[33m Compiling Kernel... [step: compiling; file: math.c] \e[0m\n"
     gcc ./kernel/math.c -ffreestanding -O0 -m64 -c -o./bin/math.o
-    printf "\e[33m Compiling Kernel... [step: util.c] \e[0m\n"
+    printf "\e[33m Compiling Kernel... [step: compiling; file: util.c] \e[0m\n"
     gcc ./kernel/util.c -ffreestanding -O0 -m64 -c -o./bin/util.o
-    printf "\e[33m Compiling Kernel... [step: condraw.c] \e[0m\n"
+    printf "\e[33m Compiling Kernel... [step: compiling; file: condraw.c] \e[0m\n"
     gcc ./kernel/condraw.c -ffreestanding -O0 -m64 -c -o./bin/condraw.o
     printf "\e[33m Compiling Kernel... [step: linking] \e[0m\n"
     # -nostdlib: Don't include stdlib
