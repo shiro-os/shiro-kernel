@@ -2,7 +2,7 @@
 
 WHITE_ON_BLACK equ 0x0f       ; First Num = Background; Second Num = Foregrund
 
-OFFSET_COUNT db 0x03          ; Start at the third line
+OFFSET_COUNT db 0x00          ; Start at the third line
 
 print_string_pm:
     pusha
