@@ -1,4 +1,6 @@
 #!/bin/bash
+cd "$(dirname "$0")"
+
 function cleanup() {
     printf "\e[33m (Re)creating binary folder \e[0m\n"
     rm -r ./bin
