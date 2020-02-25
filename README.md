@@ -3,7 +3,7 @@
 <p align="center"><img height="150" width="auto" src="http://en.ikanji.jp/user_data/images/upload/character/original/E799BD.png" /></p>
 <p align="center"><b>Shiro (白~) - A small, (not yet) monolithic x86 &amp; 64 Kernel</b></p>
 
-[![ ](https://ci.ehdes.com/api/buildresults/shield/workspace/latest/Main/Shiro)](https://ci.ehdes.com/jobdetails/workspace/latest/Shiro)
+<p align="center"><div>[![ ](https://ci.ehdes.com/api/buildresults/shield/workspace/latest/Main/Shiro)](https://ci.ehdes.com/jobdetails/workspace/latest/Shiro)</div></p>
 
 ## Table of Contents
 
