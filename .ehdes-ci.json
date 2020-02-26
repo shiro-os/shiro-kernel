@@ -10,17 +10,9 @@
                 "prio":"1",
                 "ruletype":"stdout",
                 "onmatch":"fail",
-                "onfail":"ignore",
+                "onfail":"success",
                 "matchtype":"contains",
                 "findstring":"/error/i"
-            },
-            {
-                "prio":"2",
-                "ruletype":"stdout",
-                "onmatch":"success",
-                "onfail":"success",
-                "matchtype":"-",
-                "findstring":"//"
             }
         ]
     },
