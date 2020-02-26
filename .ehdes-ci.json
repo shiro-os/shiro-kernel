@@ -1,0 +1,35 @@
+[
+    {
+        "label":"build-script",
+        "build-type":"shell",
+        "args":[
+            "bash ${WORKSPACE}/build.sh"
+        ],
+        "rules":[
+            {
+                "prio":"1",
+                "ruletype":"stdout",
+                "onmatch":"fail",
+                "onfail":"ignore",
+                "matchtype":"contains",
+                "findstring":"/error/i"
+            },
+            {
+                "prio":"2",
+                "ruletype":"stdout",
+                "onmatch":"success",
+                "onfail":"success",
+                "matchtype":"-",
+                "findstring":"//"
+            }
+        ]
+    },
+    {
+        "label":"git-pull",
+        "after":"build-script",
+        "build-type":"shell",
+        "args":[
+            "bash ${WORKSPACE}/pull.sh"
+        ]
+    }
+]
