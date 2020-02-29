@@ -1,6 +1,4 @@
 #!/bin/bash
-cd "$(dirname "$0")"
-
 function cleanup() {
     printf "\e[33m (Re)creating binary folder \e[0m\n"
     rm -r ./bin
@@ -10,19 +8,19 @@ function cleanup() {
 function compileKernel() {
     printf "\e[33m Compiling Kernel... [step: compiling; file: kernel_ep.asm] \e[0m\n"
     # -f: Format, compile as elf64 image so we can merge the header with our C Kernel
-    nasm -felf64 ./kernel/kernel_ep.asm -o./bin/kernel_ep.elf.bin
+    nasm -f elf32 ./kernel/kernel_ep.asm -o./bin/kernel_ep.elf.bin
     printf "\e[33m Compiling Kernel... [step: compiling; file: kernel.c] \e[0m\n"
     # -ffreestanding: Don't link standard library
     # -m64: Compile as 64bit image
     # -O0: Disable all Optimizations
     # -c: Don't Link
-    gcc ./kernel/kernel.c -ffreestanding -O0 -m64 -c -o./bin/kernel.o
+    gcc ./kernel/kernel.c -ffreestanding -O0 -m32 -c -o./bin/kernel.o -fno-pie
     printf "\e[33m Compiling Kernel... [step: compiling; file: math.c] \e[0m\n"
-    gcc ./kernel/math.c -ffreestanding -O0 -m64 -c -o./bin/math.o
+    gcc ./kernel/math.c -ffreestanding -O0 -m32 -c -o./bin/math.o -fno-pie
     printf "\e[33m Compiling Kernel... [step: compiling; file: util.c] \e[0m\n"
-    gcc ./kernel/util.c -ffreestanding -O0 -m64 -c -o./bin/util.o
+    gcc ./kernel/util.c -ffreestanding -O0 -m32 -c -o./bin/util.o -fno-pie
     printf "\e[33m Compiling Kernel... [step: compiling; file: condraw.c] \e[0m\n"
-    gcc ./kernel/condraw.c -ffreestanding -O0 -m64 -c -o./bin/condraw.o
+    gcc ./kernel/condraw.c -ffreestanding -O0 -m32 -c -o./bin/condraw.o -fno-pie
     printf "\e[33m Compiling Kernel... [step: linking] \e[0m\n"
     # -nostdlib: Don't include stdlib
     # -nodefaultlib: Skip default libs
@@ -42,7 +40,7 @@ function createImage() {
 
 function launch() {
     printf "\e[33m Launching VM... \e[0m\n"
-    qemu-system-x86_64 -m 1024 -drive file=./bin/boot.bin,format=raw,index=0,media=disk -boot c
+    qemu-system-i386 -m 1024 -drive file=./bin/boot.bin,format=raw,index=0,media=disk -boot c
 }
 
 
