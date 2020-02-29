@@ -7,16 +7,23 @@
 #include "condraw.h"
 #include "math.h"
 
+int abs(int val)
+{
+    if (val < 0)
+        val = -val;
+    return val;
+}
 
-int abs(int val) {
-    if(val < 0) val = -val;
+double absd(double val)
+{
+    if (val < 0)
+        val = -val;
     return val;
 }
-double absd(double val) {
-    if(val < 0) val = -val;
-    return val;
-}
-float absf(float val) {
-    if(val < 0) val = -val;
+
+float absf(float val)
+{
+    if (val < 0)
+        val = -val;
     return val;
 }

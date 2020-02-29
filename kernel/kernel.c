@@ -1,3 +1,14 @@
+/**
+ * @file kernel.c
+ * @author Marcus Kram (m.kram@live.at)
+ * @brief 
+ * @version 0.1
+ * @date 2020-02-29
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
 // Default Imports
 #include "constants.h"
 #include "types.h"

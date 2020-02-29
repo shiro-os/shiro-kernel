@@ -8,4 +8,5 @@
 
 /.make/*
 /.vscode/*
+/kernel/.vscode/*
 bin/
