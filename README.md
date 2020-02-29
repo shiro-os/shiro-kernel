@@ -14,13 +14,13 @@
 
 ## :information_source: About
 
-Shiro 白 is a small monolithic x86 &amp; 64 Kernel which is able to process input and provide output accordingly.
+Shiro 白 is a small monolithic x86 &amp; 64 Kernel.
 
 The name "Shiro" itself is the Japanese word for "white" written in [Romaji](https://www.japanesepod101.com/japanese-romaji/). The symbol (白) is the japanese [Kanji](https://en.wikipedia.org/wiki/Kanji) for the word "white". 
 
-I wanted to learn a bit about kernel development. And that's basically the whole purpose of this project/repository.
+**Long-term goal:**
 
-> **IMPORTANT:** This is a WIP and doesn't do anything yet! Also Im a C & NASM rookie and probably don't know what I am doing. 
+We want to extend it to a fully functional OS someday.
 
 <hr>
 
