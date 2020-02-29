@@ -8,5 +8,6 @@
 
 /.make/*
 /.vscode/*
+/kernel/.vscode/*
 bin/
 /out/*
