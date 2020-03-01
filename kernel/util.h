@@ -30,7 +30,7 @@ void setchar(int x, int y, char c);
  * @param y 
  * @param color 
  */
-void setcharcolor(int x, int y, BYTE color);
+void setcharcolor(int x, int y, uint8_t color);
 
 /**
  * @brief Return the lenght [int] of a given chararray
@@ -50,13 +50,13 @@ void cls();
  * 
  * @param color 
  */
-void setColor(BYTE color);
+void setColor(uint8_t color);
 
 /**
  * @brief Print out data in stdio
  * 
  * @param msg 
  */
-void print(char *msg);
+void puts(const char *msg);
 
 #endif
