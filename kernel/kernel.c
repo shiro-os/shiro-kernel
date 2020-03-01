@@ -40,5 +40,5 @@ void init() {
     setcharcolor(CON_WIDTH/2, CON_HEIGHT/2, 0xF0);
 
     //TODO: drawLine still crashes. Why? 
-    //drawLine(1.0, 1.0, 2.0, 2.0);    
+    drawLine(1.0, 1.0, 2.0, 2.0);    
 }

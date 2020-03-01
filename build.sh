@@ -25,7 +25,7 @@ function compileKernel() {
     # -nostdlib: Don't include stdlib
     # -nodefaultlib: Skip default libs
     # -T link.ld: Run Linkerscript 'link.ld'
-    ld -nostdlib -nodefaultlibs -Tlink.ld ./bin/kernel_ep.elf.bin ./bin/kernel.o ./bin/math.o ./bin/util.o ./bin/condraw.o -o./bin/kernel.bin
+    ld -m elf_i386 -nostdlib -nodefaultlibs -T link.ld ./bin/kernel_ep.elf.bin ./bin/kernel.o ./bin/math.o ./bin/util.o ./bin/condraw.o -o./bin/kernel.bin
 }
 
 function compileBootsector() {
@@ -35,12 +35,12 @@ function compileBootsector() {
 
 function createImage() {
     printf "\e[33m Creating image... \e[0m\n"
-    cat ./bin/boot_sector.bin ./bin/kernel.bin >> ./bin/boot.bin
+    cat ./bin/kernel.bin >> ./bin/boot.bin
 }
 
 function launch() {
     printf "\e[33m Launching VM... \e[0m\n"
-    qemu-system-i386 -m 1024 -drive file=./bin/boot.bin,format=raw,index=0,media=disk -boot c
+    qemu-system-i386 -kernel ./bin/kernel.bin
 }
 
 
@@ -48,7 +48,7 @@ printf "Started build!\n\n"
 
 cleanup
 compileKernel
-compileBootsector
+#compileBootsector
 createImage
 launch
 
