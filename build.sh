@@ -20,6 +20,8 @@ function compileKernel() {
         printf "\e[33m Detected Cross Compiler... going forward with i686-elf-g++ \e[0m\n"
         printf "\e[33m Building File for Shiro: kernel.cpp... \e[0m\n"
         i686-elf-g++ -c ./kernel/kernel.cpp -o ./bin/kernel.o -ffreestanding -fno-exceptions -fno-rtti
+        printf "\e[33m Building File for Shiro: Terminal.cpp... \e[0m\n"
+        i686-elf-g++ -c ./kernel/Terminal.cpp -o ./bin/Terminal.o -ffreestanding -fno-exceptions -fno-rtti
     else
         printf "\e[33m Missing correct Cross compiler... Fallback to g++ (May cause unwanted behaviour) \e[0m\n"
         printf "\e[33m Building File: kernel.cpp... \e[0m\n"
@@ -28,9 +30,9 @@ function compileKernel() {
 
     printf "\e[33m Linking binaries... \e[0m\n"
     if [ -x "$CROSS_COMPILER_PATH" ]; then
-        i686-elf-gcc ./bin/boot.o ./bin/kernel.o -T link.ld -o./bin/shiro.bin -nostdlib -nodefaultlibs -lgcc
+        i686-elf-gcc ./bin/boot.o ./bin/kernel.o ./bin/Terminal.o -T link.ld -o./bin/shiro.bin -nostdlib -nodefaultlibs -lgcc
     else
-        gcc -m32 ./bin/boot.o ./bin/kernel.o -T link.ld -o./bin/shiro.bin -nostdlib -nodefaultlibs
+        gcc -m32 ./bin/boot.o ./bin/kernel.o ./bin/Terminal.o -T link.ld -o./bin/shiro.bin -nostdlib -nodefaultlibs
     fi
 }
 

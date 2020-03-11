@@ -12,11 +12,14 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "Terminal.hpp"
+
 extern "C"
 {
     int _entry(void)
     {
-
+        Terminal ctx;
+        ctx.setColor(VGA_COLOR_GREEN);
         return 0;
     }
 }

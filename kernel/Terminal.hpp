@@ -46,12 +46,51 @@ enum vgaTerminalColor {
  */
 class Terminal {
 public:
+    /**
+     * @brief Construct a new Terminal object
+     * 
+     */
     Terminal();
+
+    /**
+     * @brief Clears the whole terminal screen.
+     * 
+     * @return Terminal& 
+     */
     Terminal &clear();
+    
+    /**
+     * @brief Clears a line, removes Background and foreground color.
+     * 
+     * @param lineNumber 
+     * @return Terminal& 
+     */
     Terminal &clearLine(size_t /* Line to clear */ lineNumber);
+
+    /**
+     * @brief Clears a section of the terminal from starting point until end of terminal
+     * 
+     * @param start 
+     * @return Terminal& 
+     */
     Terminal &clearSection(size_t /*Section to Start with */ start);
+
+    /**
+     * @brief Clears a section of the terminal from starting pointer until endpoint.
+     * 
+     * @param start 
+     * @param end 
+     * @return Terminal& 
+     */
     Terminal &clearSection(size_t /*Section to Start with */ start, size_t /* Section to stop */ end);
     
+    /**
+     * @brief Set the Color which should be used for text
+     * Previous text is not affected by this function, only new text which should be inserted.
+     * 
+     * @param color 
+     * @return Terminal& 
+     */
     Terminal &setColor(vgaTerminalColor color);
 private:
     vgaTerminalColor color;
