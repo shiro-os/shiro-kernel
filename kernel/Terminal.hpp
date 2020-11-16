@@ -1,12 +1,12 @@
 /**
  * @file Terminal.hpp
- * @author Marcus Kram (m.kram@live.at)
- * @brief 
+ * @author Marcus Kram (m.kram@live.at), Eric Himmelbauer (eric@ehdes.com)
+ * @brief
  * @version 0.1
- * @date 2020-03-01
- * 
+ * @date 2020-11-16
+ *
  * @copyright Copyright (c) 2020
- * 
+ *
  */
 
 #ifndef __TERMINAL_HPP_
@@ -48,53 +48,120 @@ class Terminal {
 public:
     /**
      * @brief Construct a new Terminal object
-     * 
+     *
      */
     Terminal();
 
     /**
-     * @brief Clears the whole terminal screen.
-     * 
-     * @return Terminal& 
+     * @brief Clears the whole terminal screen and resets the offset.
+     * color
+     * @return Terminal&
      */
     Terminal &clear();
-    
+
     /**
      * @brief Clears a line, removes Background and foreground color.
-     * 
-     * @param lineNumber 
-     * @return Terminal& 
+     *
+     * @param lineNumber
+     * @return Terminal&
      */
     Terminal &clearLine(size_t /* Line to clear */ lineNumber);
 
     /**
      * @brief Clears a section of the terminal from starting point until end of terminal
-     * 
-     * @param start 
-     * @return Terminal& 
+     *
+     * @param start
+     * @return Terminal&
      */
     Terminal &clearSection(size_t /*Section to Start with */ start);
 
     /**
      * @brief Clears a section of the terminal from starting pointer until endpoint.
-     * 
-     * @param start 
-     * @param end 
-     * @return Terminal& 
+     *
+     * @param start
+     * @param end
+     * @return Terminal&
      */
     Terminal &clearSection(size_t /*Section to Start with */ start, size_t /* Section to stop */ end);
-    
+
     /**
      * @brief Set the Color which should be used for text
      * Previous text is not affected by this function, only new text which should be inserted.
-     * 
-     * @param color 
-     * @return Terminal& 
+     *
+     * @param color
+     * @return Terminal&
      */
-    Terminal &setColor(vgaTerminalColor color);
-private:
-    vgaTerminalColor color;
+    Terminal &setFgColor(vgaTerminalColor color);
 
+    /**
+     * @brief Set the Backgroundcolor which should be used as the color behind text.
+     * Previous text is not affected by this function, only new text which should be inserted.
+     *
+     * @param color
+     * @return Terminal&
+     */
+    Terminal &setBgColor(vgaTerminalColor color);
+
+    /**
+     * @brief Prints text on the current offset.
+     *
+     * @param str
+     * @return Terminal&
+     */
+    Terminal &print(const char* str);
+
+    /**
+     * @brief Prints a char on the specified coordinates.
+     *
+     * @param str
+     * @return Terminal&
+     */
+    Terminal &setCharAt(size_t x, size_t y, const char c);
+
+    /**
+     * @brief Prints text on the current offset, and updates the offset to x=0; y=currentLine+1
+     *
+     * @param str
+     * @return Terminal&
+     */
+    Terminal &printLine(const char* str);
+
+    /**
+     * @brief Sets the current offset to the specified coordinates
+     *
+     * @param x
+     * @param y
+     * @return Terminal&
+     */
+    Terminal &setPointer(size_t x, size_t y);
+
+private:
+    vgaTerminalColor foregroundColor = vgaTerminalColor::VGA_COLOR_WHITE;
+    vgaTerminalColor backgroundColor = vgaTerminalColor::VGA_COLOR_BLACK;
+    /**
+     * @brief The current offset of the terminal.
+     */
+    size_t currentIndex = 0;
+    /**
+     * @brief Translates current offset to X position
+     *
+     * @return size_t
+     */
+    size_t getIndexPosX();
+    /**
+     * @brief Translates current offset to Y position
+     *
+     * @return size_t
+     */
+    size_t getIndexPosY();
+    /**
+     * @brief Translates coordinates to console-offset
+     *
+     * @param x
+     * @param y
+     * @return size_t
+     */
+    size_t pointToIndex(size_t x, size_t y);
 };
 
 #endif

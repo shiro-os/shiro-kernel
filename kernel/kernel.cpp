@@ -1,13 +1,3 @@
-/**
- * @file kernel.cpp
- * @author Marcus Kram (m.kram@live.at)
- * @brief 
- * @version 0.1
- * @date 2020-03-01
- * 
- * @copyright Copyright (c) 2020
- * 
- */
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -19,7 +9,15 @@ extern "C"
     int _entry(void)
     {
         Terminal ctx;
-        ctx.setColor(VGA_COLOR_GREEN);
+        ctx.setFgColor(vgaTerminalColor::VGA_COLOR_RED)
+            .printLine("[Shiro] Shiro Kernel initialized\0")
+            .setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
+            .printLine("[Shiro] Bingus imsd 1 nicer kadser\0")
+            .setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
+            .setBgColor(vgaTerminalColor::VGA_COLOR_WHITE)
+            .printLine("[Shiro] I have top level autism\0")
+            .setCharAt(50, 10, 'X');
+
         return 0;
     }
 }
