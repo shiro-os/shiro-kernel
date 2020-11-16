@@ -8,21 +8,15 @@
 
 int abs(int val)
 {
-    if (val < 0)
-        val = -val;
-    return val;
+    return val < 0 ? -val : val;
 }
 
 double absd(double val)
 {
-    if (val < 0)
-        val = -val;
-    return val;
+    return val < 0 ? -val : val;
 }
 
 float absf(float val)
 {
-    if (val < 0)
-        val = -val;
-    return val;
+    return val < 0 ? -val : val;
 }
