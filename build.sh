@@ -3,44 +3,69 @@ function cleanup() {
     printf "\e[33m (Re)creating binary folder \e[0m\n"
     rm -r ./bin
     mkdir -p ./bin
+    rm -r ./isodir
+    mkdir -p ./isodir/boot/grub
 }
+
+CROSS_COMPILER_PATH=$(which i686-elf-g++)
 
 function compileKernel() {
+    toCompile=("./kernel/kernel.cpp" "./kernel/Terminal.cpp" "./kernel/math.c" "./kernel/util.c" "./kernel/condraw.c")
+    outputs=()
     printf "\e[33m Compiling Kernel... [step: compiling; file: kernel_ep.asm] \e[0m\n"
     # -f: Format, compile as elf64 image so we can merge the header with our C Kernel
-    nasm -f elf32 ./kernel/kernel_ep.asm -o./bin/kernel_ep.elf.bin
-    printf "\e[33m Compiling Kernel... [step: compiling; file: kernel.c] \e[0m\n"
-    # -ffreestanding: Don't link standard library
-    # -m64: Compile as 64bit image
-    # -O0: Disable all Optimizations
-    # -c: Don't Link
-    gcc ./kernel/kernel.c -ffreestanding -O0 -m32 -c -o./bin/kernel.o -fno-pie
-    printf "\e[33m Compiling Kernel... [step: compiling; file: math.c] \e[0m\n"
-    gcc ./kernel/math.c -ffreestanding -O0 -m32 -c -o./bin/math.o -fno-pie
-    printf "\e[33m Compiling Kernel... [step: compiling; file: util.c] \e[0m\n"
-    gcc ./kernel/util.c -ffreestanding -O0 -m32 -c -o./bin/util.o -fno-pie
-    printf "\e[33m Compiling Kernel... [step: compiling; file: condraw.c] \e[0m\n"
-    gcc ./kernel/condraw.c -ffreestanding -O0 -m32 -c -o./bin/condraw.o -fno-pie
-    printf "\e[33m Compiling Kernel... [step: linking] \e[0m\n"
-    # -nostdlib: Don't include stdlib
-    # -nodefaultlib: Skip default libs
-    # -T link.ld: Run Linkerscript 'link.ld'
-    ld -nostdlib -nodefaultlibs -Tlink.ld ./bin/kernel_ep.elf.bin ./bin/kernel.o ./bin/math.o ./bin/util.o ./bin/condraw.o -o./bin/kernel.bin
+    nasm -f elf32  ./kernel/kernel_ep.asm -o ./bin/boot.o
+    
+    if [ -x "$CROSS_COMPILER_PATH" ]; then
+        printf "\e[33m Detected Cross Compiler... going forward with i686-elf-g++ \e[0m\n"
+
+        for i in "${toCompile[@]}"; do
+            printf "\e[33m Building File: $i... \e[0m\n"
+            outputName=$(echo $(basename -- "$i") | sed "s/\(.*\)\(\..*\)/\.\/bin\/\1.o/g")
+            outputs+=($outputName)
+            i686-elf-g++ -c $i -o $o -ffreestanding -fno-exceptions -fno-rtti
+        done
+    else
+        printf "\e[33m Missing correct Cross compiler... Fallback to g++ (May cause unwanted behaviour) \e[0m\n"
+
+        for i in "${toCompile[@]}"; do
+            printf "\e[33m Building File: $i... \e[0m\n"
+            outputName=$(echo $(basename -- "$i") | sed "s/\(.*\)\(\..*\)/\.\/bin\/\1.o/g")
+            outputs+=($outputName)
+            g++ -m32 -c $i -o $outputName -ffreestanding -fno-exceptions -fno-rtti
+        done
+    fi
+
+    printf "\e[33m Linking binaries... \e[0m\n"
+    if [ -x "$CROSS_COMPILER_PATH" ]; then
+        i686-elf-gcc ./bin/boot.o ${outputs[@]} -T link.ld -o./bin/shiro.bin -nostdlib -nodefaultlibs -lgcc
+    else
+        gcc -m32 ./bin/boot.o ${outputs[@]} -T link.ld -o./bin/shiro.bin -nostdlib -nodefaultlibs
+    fi
 }
 
-function compileBootsector() {
-    printf "\e[33m Compiling boot sector NASM...\e[0m\n"
-    nasm -fbin ./bootsector/bootsector_main.asm -o./bin/boot_sector.bin
+function checkMultiboot() {
+    set -e
+    printf "\e[33m Check if Kernel is still Multibootable... \e[0m\n"
+    grub-file --is-x86-multiboot ./bin/shiro.bin
 }
 
 function createImage() {
+    set -e
     printf "\e[33m Creating image... \e[0m\n"
-    cat ./bin/boot_sector.bin ./bin/kernel.bin >> ./bin/boot.bin
+    cp -p ./bin/shiro.bin ./isodir/boot/shiro.bin
+    cp -p ./cfg/grub.cfg ./isodir/boot/grub/grub.cfg
+    grub-mkrescue -o ./bin/shiro.iso ./isodir > /dev/null 2>&1
 }
 
 function launch() {
     printf "\e[33m Launching VM... \e[0m\n"
-    qemu-system-i386 -m 1024 -drive file=./bin/boot.bin,format=raw,index=0,media=disk -boot c
+    qemu-system-i386 -cdrom ./bin/shiro.iso
+}
+
+function launchDbg() {
+    printf "\e[33m Launching VM in Debug mode... \e[0m\n"
+    qemu-system-i386 -m 1024 -cdrom ./bin/shiro.iso -s -S
 }
 
 
@@ -48,7 +73,8 @@ printf "Started build!\n\n"
 
 cleanup
 compileKernel
-compileBootsector
+#compileBootsector
+checkMultiboot
 createImage
 launch
 

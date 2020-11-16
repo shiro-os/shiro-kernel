@@ -9,7 +9,7 @@ void setchar(int x, int y, char c)
     ((char *)0xb8000)[(x + y)] = c;
 }
 
-void setcharcolor(int x, int y, BYTE color)
+void setcharcolor(int x, int y, uint8_t color)
 {
     y = y * CON_WIDTH * 2;
     x = ++x * 2;
@@ -29,18 +29,18 @@ int strlen(char *str)
 void cls()
 {
     int i = 0;
-    BYTE *video_memory = VIDMEM;
+    uint8_t *video_memory = VIDMEM;
     for ( ; i < 2000; i++)
     {
         *video_memory = ' ';
-        video_memory = (BYTE *)(video_memory + 2);
+        video_memory = (uint8_t *)(video_memory + 2);
     }
 }
 
-void setColor(BYTE color)
+void setColor(uint8_t color)
 {
     int i = 0;
-    BYTE *video_memory = (BYTE *)(VIDMEM + 1);
+    uint8_t *video_memory = (uint8_t *)(VIDMEM + 1);
     for ( ; i < 2000; i++)
     {
         *video_memory = color;
@@ -48,9 +48,9 @@ void setColor(BYTE color)
     }
 }
 
-void print(char *msg)
+void puts(const char *msg)
 {
-    BYTE *video_memory = VIDMEM;
+    uint8_t *video_memory = VIDMEM;
     int index = 0;
     while (msg[index] != 0)
     {

@@ -12,18 +12,10 @@
 #ifndef __TYPES_H_
 #define __TYPES_H_
 
-/**
- * @brief Definition of BYTE
- */
-#define BYTE unsigned char
-
-/**
- * @brief Definition of DWORD
- */
-#define DWORD unsigned long
+#include <stdint.h>
 
 /**
  * @brief Definition of VIDMEM
  */
-#define VIDMEM ((BYTE*)0xb8000)
+#define VIDMEM ((uint8_t*)0xb8000)
 #endif
