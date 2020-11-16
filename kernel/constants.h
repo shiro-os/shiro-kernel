@@ -14,5 +14,7 @@
 
 #define CON_WIDTH 80
 #define CON_HEIGHT 25
+#define __DBG_LOOP asm volatile("1: jmp 1b")
+
 
 #endif
