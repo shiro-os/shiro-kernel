@@ -10,7 +10,7 @@ function cleanup() {
 CROSS_COMPILER_PATH=$(which i686-elf-g++)
 
 function compileKernel() {
-    toCompile=("./kernel/kernel.cpp" "./kernel/Terminal.cpp" "./kernel/math.c" "./kernel/util.c" "./kernel/condraw.c")
+    toCompile=("./kernel/kernel.cpp" "./kernel/Terminal.cpp" "./kernel/math.c" "./kernel/util.c")
     outputs=()
     printf "\e[33m Compiling Kernel... [step: compiling; file: kernel_ep.asm] \e[0m\n"
     # -f: Format, compile as elf64 image so we can merge the header with our C Kernel

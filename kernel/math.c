@@ -4,7 +4,6 @@
 
 // Dependencies
 #include "util.h"
-#include "condraw.h"
 #include "math.h"
 
 int abs(int val)
