@@ -3,3 +3,17 @@ qemu-system-i386: -s: Failed to find an available port: Address already in use
 qemu-system-i386: -s: Failed to find an available port: Address already in use
 qemu-system-i386: terminating on signal 2
 qemu-system-i386: -s: Failed to find an available port: Address already in use
+qemu-system-i386: -s: Failed to find an available port: Address already in use
+qemu-system-i386: -s: Failed to find an available port: Address already in use
+qemu-system-i386: -s: Failed to find an available port: Address already in use
+qemu-system-i386: -s: Failed to find an available port: Address already in use
+qemu-system-i386: terminating on signal 2
+qemu-system-i386: terminating on signal 2
+qemu-system-i386: -s: Failed to find an available port: Address already in use
+qemu-system-i386: terminating on signal 2
+qemu-system-i386: terminating on signal 2
+qemu-system-i386: -s: Failed to find an available port: Address already in use
+qemu-system-i386: -s: Failed to find an available port: Address already in use
+qemu-system-i386: terminating on signal 2
+qemu-system-i386: -s: Failed to find an available port: Address already in use
+qemu-system-i386: terminating on signal 2

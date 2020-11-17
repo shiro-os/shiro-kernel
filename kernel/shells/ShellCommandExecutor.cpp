@@ -11,5 +11,11 @@ bool ShellCommandExecutor::executeLine(const char* str) {
         return true;
     }
 
-    return false;
+    int num = atoi(str);
+    char buf[64];
+    itoa(num, buf, 64);
+
+    this->shell->writeLine(buf);
+
+    return true;
 }

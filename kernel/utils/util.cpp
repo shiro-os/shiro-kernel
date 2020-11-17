@@ -1,5 +1,6 @@
 #include "../constants.h"
 #include "util.hpp"
+#include "math.h"
 
 int strlen(const char* str)
 {
@@ -16,7 +17,7 @@ int strlen(const unsigned char* str)
     return strlen((const char*)str);
 }
 
-int strdup(const char* src, char* dst) {
+int strcpy(const char* src, char* dst) {
     int len = strlen(src);
     int i = 0;
     for(; i < len; i++) {
@@ -50,7 +51,7 @@ int atoi(const char* str) {
             return 0;
         }
 
-        result += str[i] - 0x30 * 10^(len - 1);
+        result += (str[i] - 0x30) * pow(10, len - i - 1);
     }
 
     return result;

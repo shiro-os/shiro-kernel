@@ -20,3 +20,12 @@ float absf(float val)
 {
     return val < 0 ? -val : val;
 }
+
+int pow(int val, int pow) {
+    pow--;
+    int result = val;
+    for(int i = 0; i < pow; i++) {
+        result *= val;
+    }
+    return result;
+}

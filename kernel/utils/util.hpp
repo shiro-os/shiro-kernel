@@ -23,6 +23,7 @@
 int strlen(const char* str);
 int strlen(const unsigned char* str);
 
+int strcpy(const char* src, char* dst);
 bool strcmp(const char* str0, const char* str1);
 
 int atoi(const char* str);
