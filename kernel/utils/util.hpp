@@ -23,6 +23,8 @@
 int strlen(const char* str);
 int strlen(const unsigned char* str);
 
+bool strcmp(const char* str0, const char* str1);
+
 int atoi(const char* str);
 
 int itoa(int num, char* buf, int bufSize);

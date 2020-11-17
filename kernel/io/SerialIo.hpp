@@ -1,3 +1,6 @@
+#ifndef __SERIALPORT_HPP_
+#define __SERIALPORT_HPP_
+
 enum serialPort {
     COM1 = 0x3f8,
     COM2 = 0x2f8,
@@ -20,3 +23,5 @@ class SerialPort {
     private:
         serialPort port;
 };
+
+#endif

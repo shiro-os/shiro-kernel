@@ -25,6 +25,21 @@ int strdup(const char* src, char* dst) {
     return i;
 }
 
+bool strcmp(const char* str0, const char* str1) {
+    const char* s0 = str0;
+    const char* s1 = str1;
+
+    while(*s0 != '\0' || *s1 != '\0') {
+        if(*s0 != *s1) {
+            return false;
+        }
+        s0++;
+        s1++;
+    }
+
+    return true;
+}
+
 int atoi(const char* str) {
     int result = 0;
     int len = strlen(str);
