@@ -2,9 +2,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "Terminal.hpp"
-#include "SerialIo.hpp"
-#include "util.hpp"
+#include "io/Terminal.hpp"
+#include "io/SerialIo.hpp"
+#include "utils/util.hpp"
 
 extern "C"
 {

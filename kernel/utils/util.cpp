@@ -1,5 +1,4 @@
-#include "constants.h"
-#include "types.h"
+#include "../constants.h"
 #include "util.hpp"
 
 int strlen(const char* str)

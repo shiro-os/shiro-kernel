@@ -10,19 +10,20 @@ function cleanup() {
 CROSS_COMPILER_PATH=$(which i686-elf-g++)
 
 function compileKernel() {
-    toCompile=("./kernel/kernel.cpp" "./kernel/Terminal.cpp" "./kernel/math.c" "./kernel/util.cpp" "./kernel/PortIo.cpp" "./kernel/SerialIo.cpp")
+    toCompile=("./kernel/kernel.cpp" "./kernel/io/Terminal.cpp" "./kernel/utils/math.c" "./kernel/utils/util.cpp" "./kernel/io/PortIo.cpp" "./kernel/io/SerialIo.cpp")
     outputs=()
     printf "\e[33m Compiling Kernel... [step: compiling; file: kernel_ep.asm] \e[0m\n"
     # -f: Format, compile as elf64 image so we can merge the header with our C Kernel
     nasm -f elf32  ./kernel/kernel_ep.asm -o ./bin/boot.o
-    
+
     if [ -x "$CROSS_COMPILER_PATH" ]; then
         printf "\e[33m Detected Cross Compiler... going forward with i686-elf-g++ \e[0m\n"
 
         for i in "${toCompile[@]}"; do
             printf "\e[33m Building File: $i... \e[0m\n"
-            outputName=$(echo $(basename -- "$i") | sed "s/\(.*\)\(\..*\)/\.\/bin\/\1.o/g")
+            outputName=$(echo "$i" | sed "s/\(.*\)\(\..*\)/\.\/bin\/\1.o/g")
             outputs+=($outputName)
+            mkdir -p $(dirname "$outputName")
             i686-elf-g++ -c $i -o $o -ffreestanding -fno-exceptions -fno-rtti
         done
     else
@@ -30,8 +31,9 @@ function compileKernel() {
 
         for i in "${toCompile[@]}"; do
             printf "\e[33m Building File: $i... \e[0m\n"
-            outputName=$(echo $(basename -- "$i") | sed "s/\(.*\)\(\..*\)/\.\/bin\/\1.o/g")
+            outputName=$(echo "$i" | sed "s/\(.*\)\(\..*\)/\.\/bin\/\1.o/g")
             outputs+=($outputName)
+            mkdir -p $(dirname "$outputName")
             g++ -g -m32 -c $i -o $outputName -ffreestanding -fno-exceptions -fno-rtti
         done
     fi

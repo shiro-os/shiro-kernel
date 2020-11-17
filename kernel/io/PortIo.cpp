@@ -1,5 +1,5 @@
 #include "PortIo.hpp"
-#include "constants.h"
+#include "../constants.h"
 
 unsigned char PortIo::readFromPort(unsigned short port) {
     unsigned char result;

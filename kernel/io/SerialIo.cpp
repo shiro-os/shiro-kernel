@@ -1,6 +1,6 @@
 #include "SerialIo.hpp"
 #include "PortIo.hpp"
-#include "util.hpp"
+#include "../utils/util.hpp"
 
 SerialPort::SerialPort(serialPort port) {
     this->port = port;

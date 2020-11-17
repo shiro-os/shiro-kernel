@@ -1,6 +1,6 @@
 // Default Imports
-#include "constants.h"
-#include "types.h"
+#include "../constants.h"
+#include "../types.h"
 
 // Dependencies
 #include "util.hpp"

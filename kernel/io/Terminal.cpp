@@ -10,8 +10,8 @@
  */
 #include "Terminal.hpp"
 #include "PortIo.hpp"
-#include "constants.h"
-#include "util.hpp"
+#include "../constants.h"
+#include "../utils/util.hpp"
 
 Terminal::Terminal()
 {

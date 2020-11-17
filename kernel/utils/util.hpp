@@ -12,7 +12,7 @@
 #ifndef __UTIL_H_
 #define __UTIL_H_
 
-#include "types.h"
+#include "../types.h"
 
 /**
  * @brief Return the lenght [int] of a given chararray
