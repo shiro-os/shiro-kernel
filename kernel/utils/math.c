@@ -22,6 +22,10 @@ float absf(float val)
 }
 
 int pow(int val, int pow) {
+     if(pow == 0) {
+        return 1;
+    }
+
     pow--;
     int result = val;
     for(int i = 0; i < pow; i++) {

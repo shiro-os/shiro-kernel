@@ -44,9 +44,14 @@ bool strcmp(const char* str0, const char* str1) {
 int atoi(const char* str) {
     int result = 0;
     int len = strlen(str);
+    bool isMinus = false;
 
-    char lmao[len];
     for(int i = 0; i < len; i++) {
+        if(str[i] == 0x2D) {
+            isMinus = true;
+            continue;
+        }
+
         if(str[i] < 0x30 || str[i] > 0x39) {
             return 0;
         }
@@ -54,7 +59,7 @@ int atoi(const char* str) {
         result += (str[i] - 0x30) * pow(10, len - i - 1);
     }
 
-    return result;
+    return isMinus ? -result : result;
 }
 
 int itoa(int num, char* buf, int bufSize) {

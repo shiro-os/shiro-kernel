@@ -18,7 +18,8 @@ function compileKernel() {
     "./kernel/io/SerialIo.cpp" \
     "./kernel/shells/ComShell.cpp" \
     "./kernel/shells/ShellCommandExecutor.cpp" \
-    "./kernel/test/assert.cpp")
+    "./kernel/test/assert.cpp" \
+    "./kernel/test/test.cpp")
     outputs=()
     printf "\e[33m Compiling Kernel... [step: compiling; file: kernel_ep.asm] \e[0m\n"
     # -f: Format, compile as elf64 image so we can merge the header with our C Kernel
