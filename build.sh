@@ -14,6 +14,7 @@ function compileKernel() {
     "./kernel/io/Terminal.cpp" \
     "./kernel/utils/math.c" \
     "./kernel/utils/util.cpp" \
+    "./kernel/utils/string.cpp" \
     "./kernel/io/PortIo.cpp" \
     "./kernel/io/SerialIo.cpp" \
     "./kernel/shells/ComShell.cpp" \

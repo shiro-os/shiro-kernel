@@ -1,10 +1,19 @@
 #include "test.hpp"
 #include "assert.hpp"
+#include "../utils/string.hpp"
 #include "../utils/math.h"
 #include "../utils/util.hpp"
 
 #define TEST(a, b, c) if(!Assert::assert(a, b, c)) return false
 #define DO_TEST(a) if(!a) return false
+
+bool testString(char* errorMsg) {
+    String testStr = String("Bingus ist ");
+    testStr.append("ein Kadser");
+    TEST(strcmp(testStr.getData(), "Bingus ist ein Kadser"), "String: Construction, Appending", errorMsg);
+
+    return true;
+}
 
 bool testStrcmp(char* errorMsg) {
     TEST(strcmp("abcd", "abcd"), "strcmp: Failed basic compare", errorMsg);
@@ -44,6 +53,7 @@ bool Test::selfCheck(char* errorMsg) {
     DO_TEST(testPow(errorMsg));
     DO_TEST(testItoa(errorMsg));
     DO_TEST(testAtoi(errorMsg));
+    DO_TEST(testString(errorMsg));
 
     return true;
 }
