@@ -14,7 +14,7 @@ public:
     static void writeToPort(unsigned short port, unsigned char data);
 
     static int readFromPort(unsigned short port, unsigned char* buffer, int bufferSize);
-    static void writeToPort(unsigned short port, unsigned char* buffer, int bufferSize);
+    static void writeToPort(unsigned short port, const unsigned char* buffer, int bufferSize);
 
 private:
     

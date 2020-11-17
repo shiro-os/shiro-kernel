@@ -21,6 +21,7 @@
  * @return int 
  */
 int strlen(const char* str);
+int strlen(const unsigned char* str);
 
 int atoi(const char* str);
 

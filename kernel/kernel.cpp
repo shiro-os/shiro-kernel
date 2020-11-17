@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #include "Terminal.hpp"
+#include "SerialIo.hpp"
 #include "util.hpp"
 
 extern "C"
@@ -10,6 +11,9 @@ extern "C"
     int _entry(void)
     {
         Terminal ctx;
+        SerialPort serial = SerialPort(serialPort::COM1).initSerial();
+        serial.write((const unsigned char*)"[Shiro] Initialized COM1 Serial connection");
+
         ctx.setBgColor(vgaTerminalColor::VGA_COLOR_WHITE)
             .setFgColor(vgaTerminalColor::VGA_COLOR_BLACK)
             .clear();
@@ -22,6 +26,7 @@ extern "C"
             .printLine("OIDA")
             .printLine(test)
             .printLine("Lmao");
+
 
         return 0;
     }

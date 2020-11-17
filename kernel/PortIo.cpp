@@ -19,7 +19,7 @@ int PortIo::readFromPort(unsigned short port, unsigned char* buffer, int bufferS
     return i;
 }
 
-void PortIo::writeToPort(unsigned short port, unsigned char* buffer, int bufferSize) {
+void PortIo::writeToPort(unsigned short port, const unsigned char* buffer, int bufferSize) {
     for(int i = 0; i < bufferSize; i++) {
         PortIo::writeToPort(port, buffer[i]);
     }

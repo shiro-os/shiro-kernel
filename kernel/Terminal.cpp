@@ -11,6 +11,7 @@
 #include "Terminal.hpp"
 #include "PortIo.hpp"
 #include "constants.h"
+#include "util.hpp"
 
 Terminal::Terminal()
 {
@@ -96,4 +97,11 @@ Terminal &Terminal::setVgaCursor(size_t offset) {
     PortIo::writeToPort(0x3D4, 0xF);
     PortIo::writeToPort(0x3D5, (unsigned char) (offset));
     return *this;
+}
+
+void Terminal::normalizeString(const char* str, char* normalizedString) {
+    int len = strlen(str);
+    for(int i = 0; i < len; i++) {
+        normalizedString[i] = str[i] < 32 ? ' ' : str[i];
+    }
 }

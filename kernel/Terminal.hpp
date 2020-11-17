@@ -138,6 +138,8 @@ public:
     Terminal &setVgaCursor(size_t offset);
     Terminal &setVgaCursor(size_t x, size_t y);
 
+    static void normalizeString(const char* str, char* normalizedString);
+
 private:
     vgaTerminalColor foregroundColor = vgaTerminalColor::VGA_COLOR_WHITE;
     vgaTerminalColor backgroundColor = vgaTerminalColor::VGA_COLOR_BLACK;

@@ -12,6 +12,11 @@ int strlen(const char* str)
     return len;
 }
 
+int strlen(const unsigned char* str)
+{
+    return strlen((const char*)str);
+}
+
 int strdup(const char* src, char* dst) {
     int len = strlen(src);
     int i = 0;

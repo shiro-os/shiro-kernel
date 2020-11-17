@@ -10,7 +10,7 @@ function cleanup() {
 CROSS_COMPILER_PATH=$(which i686-elf-g++)
 
 function compileKernel() {
-    toCompile=("./kernel/kernel.cpp" "./kernel/Terminal.cpp" "./kernel/math.c" "./kernel/util.cpp" "./kernel/PortIo.cpp")
+    toCompile=("./kernel/kernel.cpp" "./kernel/Terminal.cpp" "./kernel/math.c" "./kernel/util.cpp" "./kernel/PortIo.cpp" "./kernel/SerialIo.cpp")
     outputs=()
     printf "\e[33m Compiling Kernel... [step: compiling; file: kernel_ep.asm] \e[0m\n"
     # -f: Format, compile as elf64 image so we can merge the header with our C Kernel
@@ -65,7 +65,7 @@ function launch() {
 
 function launchDbg() {
     printf "\e[33m Launching VM in Debug mode... \e[0m\n"
-    nohup qemu-system-i386 -m 1024 -cdrom ./bin/shiro.iso -s -S & gdb -s ./bin/shiro.bin -ex "target remote localhost:1234" -ex "layout next" -ex "layout next" -ex "layout next"
+    nohup qemu-system-i386 -m 1024 -cdrom ./bin/shiro.iso -s -S & gdb -s ./bin/shiro.bin -ex "target remote localhost:1234" -ex "layout next" -ex "layout next" -ex "layout next" --nx
 }
 
 
