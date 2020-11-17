@@ -9,9 +9,10 @@
  * 
  */
 #include "Terminal.hpp"
+#include "PortIo.hpp"
 #include "constants.h"
 
-Terminal::Terminal() 
+Terminal::Terminal()
 {
     Terminal::clear();
 }
@@ -19,11 +20,13 @@ Terminal::Terminal()
 Terminal &Terminal::clear()
 {
     uint8_t *screen = ((uint8_t*)0xb8000);
-    for(auto screenItr = 0; screenItr <= 2000; screenItr++) {
-        *(screen + screenItr++) = ' ';
+    for(auto screenItr = 0; screenItr <= CON_HEIGHT * CON_WIDTH; screenItr++) {
+        *(screen + (screenItr * 2)) = ' ';
+        *(screen + (screenItr * 2) + 1) = (this->backgroundColor << 4) + this->foregroundColor;
     }
 
     this->currentIndex = 0;
+    this->setVgaCursor(this->currentIndex);
     return *this;
 }
 
@@ -50,6 +53,8 @@ Terminal &Terminal::print(const char* str) {
         this->currentIndex++;
         *((uint8_t*)screen + 1) = (this->backgroundColor << 4) + this->foregroundColor;
         *screen = str[index];
+
+        this->setVgaCursor(this->currentIndex);
         screen = screen + 2;
         index = index + 1;
     }
@@ -76,5 +81,19 @@ size_t Terminal::pointToIndex(size_t x, size_t y) {
 
 Terminal &Terminal::setPointer(size_t x, size_t y) {
     this->currentIndex = this->pointToIndex(x, y);
+    return *this;
+}
+
+Terminal &Terminal::setVgaCursor(size_t x, size_t y) {
+    size_t offset = this->pointToIndex(x, y);
+    this->setVgaCursor(offset);
+    return *this;
+}
+
+Terminal &Terminal::setVgaCursor(size_t offset) {
+    PortIo::writeToPort(0x3D4, 0xE);
+    PortIo::writeToPort(0x3D5, (unsigned char) (offset >> 8));
+    PortIo::writeToPort(0x3D4, 0xF);
+    PortIo::writeToPort(0x3D5, (unsigned char) (offset));
     return *this;
 }

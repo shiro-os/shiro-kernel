@@ -135,6 +135,9 @@ public:
      */
     Terminal &setPointer(size_t x, size_t y);
 
+    Terminal &setVgaCursor(size_t offset);
+    Terminal &setVgaCursor(size_t x, size_t y);
+
 private:
     vgaTerminalColor foregroundColor = vgaTerminalColor::VGA_COLOR_WHITE;
     vgaTerminalColor backgroundColor = vgaTerminalColor::VGA_COLOR_BLACK;

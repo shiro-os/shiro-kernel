@@ -10,7 +10,7 @@ function cleanup() {
 CROSS_COMPILER_PATH=$(which i686-elf-g++)
 
 function compileKernel() {
-    toCompile=("./kernel/kernel.cpp" "./kernel/Terminal.cpp" "./kernel/math.c" "./kernel/util.c")
+    toCompile=("./kernel/kernel.cpp" "./kernel/Terminal.cpp" "./kernel/math.c" "./kernel/util.cpp" "./kernel/PortIo.cpp")
     outputs=()
     printf "\e[33m Compiling Kernel... [step: compiling; file: kernel_ep.asm] \e[0m\n"
     # -f: Format, compile as elf64 image so we can merge the header with our C Kernel
@@ -32,7 +32,7 @@ function compileKernel() {
             printf "\e[33m Building File: $i... \e[0m\n"
             outputName=$(echo $(basename -- "$i") | sed "s/\(.*\)\(\..*\)/\.\/bin\/\1.o/g")
             outputs+=($outputName)
-            g++ -m32 -c $i -o $outputName -ffreestanding -fno-exceptions -fno-rtti
+            g++ -g -m32 -c $i -o $outputName -ffreestanding -fno-exceptions -fno-rtti
         done
     fi
 
@@ -40,7 +40,7 @@ function compileKernel() {
     if [ -x "$CROSS_COMPILER_PATH" ]; then
         i686-elf-gcc ./bin/boot.o ${outputs[@]} -T link.ld -o./bin/shiro.bin -nostdlib -nodefaultlibs -lgcc
     else
-        gcc -m32 ./bin/boot.o ${outputs[@]} -T link.ld -o./bin/shiro.bin -nostdlib -nodefaultlibs
+        gcc -g -m32 ./bin/boot.o ${outputs[@]} -T link.ld -o./bin/shiro.bin -nostdlib -nodefaultlibs
     fi
 }
 
@@ -65,7 +65,7 @@ function launch() {
 
 function launchDbg() {
     printf "\e[33m Launching VM in Debug mode... \e[0m\n"
-    qemu-system-i386 -m 1024 -cdrom ./bin/shiro.iso -s -S
+    nohup qemu-system-i386 -m 1024 -cdrom ./bin/shiro.iso -s -S & gdb -s ./bin/shiro.bin -ex "target remote localhost:1234" -ex "layout next" -ex "layout next" -ex "layout next"
 }
 
 
@@ -76,6 +76,6 @@ compileKernel
 #compileBootsector
 checkMultiboot
 createImage
-launch
+launchDbg
 
 exit 0

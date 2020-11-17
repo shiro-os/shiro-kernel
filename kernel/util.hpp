@@ -20,6 +20,10 @@
  * @param str 
  * @return int 
  */
-int strlen(char * str);
+int strlen(const char* str);
+
+int atoi(const char* str);
+
+int itoa(int num, char* buf, int bufSize);
 
 #endif

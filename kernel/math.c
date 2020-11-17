@@ -3,7 +3,7 @@
 #include "types.h"
 
 // Dependencies
-#include "util.h"
+#include "util.hpp"
 #include "math.h"
 
 int abs(int val)

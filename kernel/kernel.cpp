@@ -3,20 +3,25 @@
 #include <stdint.h>
 
 #include "Terminal.hpp"
+#include "util.hpp"
 
 extern "C"
 {
     int _entry(void)
     {
         Terminal ctx;
-        ctx.setFgColor(vgaTerminalColor::VGA_COLOR_RED)
+        ctx.setBgColor(vgaTerminalColor::VGA_COLOR_WHITE)
+            .setFgColor(vgaTerminalColor::VGA_COLOR_BLACK)
+            .clear();
+
+        char test[5];
+        itoa(1234, test, 4);
+
+        ctx.setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
             .printLine("[Shiro] Shiro Kernel initialized\0")
-            .setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
-            .printLine("[Shiro] Bingus imsd 1 nicer kadser\0")
-            .setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
-            .setBgColor(vgaTerminalColor::VGA_COLOR_WHITE)
-            .printLine("[Shiro] I have top level autism\0")
-            .setCharAt(50, 10, 'X');
+            .printLine("OIDA")
+            .printLine(test)
+            .printLine("Lmao");
 
         return 0;
     }
