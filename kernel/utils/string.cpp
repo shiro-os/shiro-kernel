@@ -31,3 +31,12 @@ const char* String::getData() {
 int String::getLength() {
     return this->length;
 }
+
+bool String::equals(const char* str) {
+    return strcmp(this->data, str);
+}
+
+bool String::equals(String str) {
+    return strcmp(this->data, str.data);
+}
+

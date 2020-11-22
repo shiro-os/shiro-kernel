@@ -73,3 +73,9 @@ int itoa(int num, char* buf, int bufSize) {
 
     return steps;
 }
+
+void memcpy(const char* src, char* dst, int length) {
+    for(int i = 0; i < length; i++) {
+        dst[i] = src[i];
+    }
+}

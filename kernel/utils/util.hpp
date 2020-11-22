@@ -27,7 +27,8 @@ int strcpy(const char* src, char* dst);
 bool strcmp(const char* str0, const char* str1);
 
 int atoi(const char* str);
-
 int itoa(int num, char* buf, int bufSize);
+
+void memcpy(const char* src, char* dst, int length);
 
 #endif
