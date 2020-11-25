@@ -9,6 +9,8 @@
 #include "test/test.hpp"
 #include "utils/gdt.hpp"
 #include "utils/kernelutils.hpp"
+#include "utils/util.hpp"
+#include "interrupts/idt.hpp"
 
 extern "C"
 {
@@ -31,6 +33,7 @@ extern "C"
     int _entry()
     {
         volatile auto gdt = Gdt::setupGdt();
+        idt_init();
 
         Terminal ctx;
         SerialPort serial = SerialPort(serialPort::COM1).initSerial();

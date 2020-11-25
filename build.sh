@@ -22,12 +22,15 @@ function compileKernel() {
     "./kernel/shells/ComShell.cpp" \
     "./kernel/shells/ShellCommandExecutor.cpp" \
     "./kernel/test/assert.cpp" \
-    "./kernel/test/test.cpp")
+    "./kernel/test/test.cpp" \
+    "./kernel/interrupts/idt.cpp" \
+    "./kernel/interrupts/irq_handler.cpp")
     outputs=()
 
     toAssemble=(
-        "./kernel/kernel_ep.asm"
-        "./kernel/utils/gdt.asm")
+        "./kernel/kernel_ep.asm" \
+        "./kernel/utils/util.asm" \
+        "./kernel/interrupts/idt.asm")
 
     for i in "${toAssemble[@]}"; do
         printf "\e[33m Assembling File: $i... \e[0m\n"
