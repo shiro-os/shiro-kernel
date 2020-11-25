@@ -14,6 +14,7 @@ function compileKernel() {
     "./kernel/io/Terminal.cpp" \
     "./kernel/utils/math.c" \
     "./kernel/utils/util.cpp" \
+    "./kernel/utils/kernelutils.cpp" \
     "./kernel/utils/string.cpp" \
     "./kernel/utils/gdt.cpp" \
     "./kernel/io/PortIo.cpp" \
@@ -23,9 +24,17 @@ function compileKernel() {
     "./kernel/test/assert.cpp" \
     "./kernel/test/test.cpp")
     outputs=()
-    printf "\e[33m Compiling Kernel... [step: compiling; file: kernel_ep.asm] \e[0m\n"
-    # -f: Format, compile as elf64 image so we can merge the header with our C Kernel
-    nasm -f elf32  ./kernel/kernel_ep.asm -o ./bin/boot.o
+
+    toAssemble=(
+        "./kernel/kernel_ep.asm")
+
+    for i in "${toAssemble[@]}"; do
+        printf "\e[33m Assembling File: $i... \e[0m\n"
+        outputName=$(echo "$i" | sed "s/\(.*\)\(\..*\)/\.\/bin\/\1.o/g")
+        outputs+=($outputName)
+        mkdir -p $(dirname "$outputName")
+        nasm -f elf32 "$i" -o "$outputName"
+    done
 
     if [ -x "$CROSS_COMPILER_PATH" ]; then
         printf "\e[33m Detected Cross Compiler... going forward with i686-elf-g++ \e[0m\n"
@@ -35,7 +44,7 @@ function compileKernel() {
             outputName=$(echo "$i" | sed "s/\(.*\)\(\..*\)/\.\/bin\/\1.o/g")
             outputs+=($outputName)
             mkdir -p $(dirname "$outputName")
-            i686-elf-g++ -c $i -o $o -ffreestanding -fno-exceptions -fno-rtti
+            i686-elf-g++ -c $i -o $o -ffreestanding -fno-exceptions -fno-rtti -finline-functions
         done
     else
         printf "\e[33m Missing correct Cross compiler... Fallback to g++ (May cause unwanted behaviour) \e[0m\n"
@@ -45,7 +54,7 @@ function compileKernel() {
             outputName=$(echo "$i" | sed "s/\(.*\)\(\..*\)/\.\/bin\/\1.o/g")
             outputs+=($outputName)
             mkdir -p $(dirname "$outputName")
-            g++ -g -m32 -c $i -o $outputName -ffreestanding -fno-exceptions -fno-rtti
+            g++ -g -m32 -c $i -o $outputName -ffreestanding -fno-exceptions -fno-rtti -finline-functions
         done
     fi
 
@@ -53,7 +62,7 @@ function compileKernel() {
     if [ -x "$CROSS_COMPILER_PATH" ]; then
         i686-elf-gcc ./bin/boot.o ${outputs[@]} -T link.ld -o./bin/shiro.bin -nostdlib -nodefaultlibs -lgcc
     else
-        gcc -g -m32 ./bin/boot.o ${outputs[@]} -T link.ld -o./bin/shiro.bin -nostdlib -nodefaultlibs
+        gcc -g -m32 ${outputs[@]} -T link.ld -o./bin/shiro.bin -nostdlib -nodefaultlibs
     fi
 }
 

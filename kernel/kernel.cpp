@@ -8,6 +8,7 @@
 #include "shells/ComShell.hpp"
 #include "test/test.hpp"
 #include "utils/gdt.hpp"
+#include "utils/kernelutils.hpp"
 
 extern "C"
 {

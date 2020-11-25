@@ -8,8 +8,8 @@ gdtr Gdt::setupGdt() {
 
     GdtEntry entries[3];
     Gdt::constructEntry(0,0,0,0, (void*)&entries[0]);
-    Gdt::constructEntry(0,0xFFFFFFFF,0x9A,0xAF, (void*)&entries[1]);
-    Gdt::constructEntry(0,0xFFFFFFFF,0x92,0xAF, (void*)&entries[2]);
+    Gdt::constructEntry(0,0xFFFFFFFF,0x9A,0xCF, (void*)&entries[1]);
+    Gdt::constructEntry(0,0xFFFFFFFF,0x92,0xCF, (void*)&entries[2]);
 
     memcpy((char*)entries, (char*)0x800, result.limit);
 
