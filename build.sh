@@ -26,11 +26,12 @@ function compileKernel() {
     outputs=()
 
     toAssemble=(
-        "./kernel/kernel_ep.asm")
+        "./kernel/kernel_ep.asm"
+        "./kernel/utils/gdt.asm")
 
     for i in "${toAssemble[@]}"; do
         printf "\e[33m Assembling File: $i... \e[0m\n"
-        outputName=$(echo "$i" | sed "s/\(.*\)\(\..*\)/\.\/bin\/\1.o/g")
+        outputName=$(echo "$i" | sed "s/\(.*\)\(\..*\)/\.\/bin\/\1.oasm/g")
         outputs+=($outputName)
         mkdir -p $(dirname "$outputName")
         nasm -f elf32 "$i" -o "$outputName"
