@@ -4,7 +4,6 @@
 
 extern "C" {
     void idt_init() {
-        extern int idt_load(uint64_t* idtDescriptor);
         extern int irq0();
         extern int irq1();
         extern int irq2();
@@ -41,6 +40,9 @@ extern "C" {
             (uint64_t)irq15,
         };
 
+        int a = PortIo::readFromPort(0x21);
+        int b = PortIo::readFromPort(0xA1);
+
         PortIo::writeToPort(0x20, 0x11);
         PortIo::writeToPort(0xA0, 0x11);
         PortIo::writeToPort(0x21, 0x20);
@@ -51,21 +53,29 @@ extern "C" {
         PortIo::writeToPort(0xA1, 0x01);
         PortIo::writeToPort(0x21, 0x00);
         PortIo::writeToPort(0xA1, 0x00);
+        PortIo::writeToPort(0x21, a);
+        PortIo::writeToPort(0xA1, b);
 
         int curTableIndex = 32;
+        IDT_Entry* IDT_Table_l = &IDT_Table;
         for(int i = 0; i <= 15; i++, curTableIndex++) {
-            IDT_Entry* currentEntry = &IDT_Table[curTableIndex];
-            currentEntry->offset_lower = irqHandlers[i] & 0x0000FFFF;
-            currentEntry->selector = 0x08;
-            currentEntry->null = 0x00;
-            currentEntry->type_attribute = 0x8E;
-            currentEntry->offset_high = (irqHandlers[i] & 0xFFFF0000) >> 16;
+            IDT_Table_l[curTableIndex].offset_lower = irqHandlers[i] & 0x0000FFFF;
+            IDT_Table_l[curTableIndex].selector = 0x08;
+            IDT_Table_l[curTableIndex].null = 0x00;
+            IDT_Table_l[curTableIndex].type_attribute = 0x8E;
+            IDT_Table_l[curTableIndex].offset_high = (irqHandlers[i] & 0xFFFF0000) >> 16;
         }
 
-        uint64_t pIdt[2];
-        pIdt[0] = (sizeof(struct IDT_Entry) * 256) + (((uint64_t)IDT_Table & 0x0000FFFF) << 16);
-        pIdt[1] = (((uint64_t)IDT_Table) & 0xFFFF0000) >> 16;
+        struct idt_descriptor {
+            uint16_t limit;
+            uint32_t base;
+        } __attribute__((packed));
+        extern int idt_load(idt_descriptor* idtDescriptor);
 
-        idt_load(pIdt);
+        idt_descriptor pIdt;
+        pIdt.limit = (sizeof(struct IDT_Entry) * 256) - 1;
+        pIdt.base = (uintptr_t) IDT_Table_l;
+
+        idt_load(&pIdt);
     }
 }

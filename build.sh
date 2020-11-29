@@ -24,7 +24,8 @@ function compileKernel() {
     "./kernel/test/assert.cpp" \
     "./kernel/test/test.cpp" \
     "./kernel/interrupts/idt.cpp" \
-    "./kernel/interrupts/irq_handler.cpp")
+    "./kernel/interrupts/irq_handler.cpp" \
+    "./kernel/interrupts/interrupt_utils.cpp")
     outputs=()
 
     toAssemble=(

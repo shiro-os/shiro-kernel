@@ -1,10 +1,10 @@
 section .text
-global setInterrupts:
-setInterrupts:
+global enable_interrupts:
+enable_interrupts:
   sti
   ret
 
-global clearInterrupts:
-clearInterrupts:
+global disable_interrupts:
+disable_interrupts:
   cli
   ret

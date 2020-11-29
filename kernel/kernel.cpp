@@ -4,6 +4,7 @@
 
 #include "io/Terminal.hpp"
 #include "io/SerialIo.hpp"
+#include "io/PortIo.hpp"
 #include "shells/IShell.hpp"
 #include "shells/ComShell.hpp"
 #include "test/test.hpp"
@@ -11,6 +12,7 @@
 #include "utils/kernelutils.hpp"
 #include "utils/util.hpp"
 #include "interrupts/idt.hpp"
+#include "interrupts/interrupt_utils.hpp"
 
 extern "C"
 {
@@ -34,6 +36,8 @@ extern "C"
     {
         volatile auto gdt = Gdt::setupGdt();
         idt_init();
+        PortIo::writeToPort(0x21, 0xFD);
+        PortIo::writeToPort(0xA1, 0xFF);
 
         Terminal ctx;
         SerialPort serial = SerialPort(serialPort::COM1).initSerial();
@@ -53,6 +57,12 @@ extern "C"
             ctx.setFgColor(vgaTerminalColor::VGA_COLOR_RED)
                 .printLine("[Shiro] A20 Line not set!");
         }
+
+        enable_interrupts();
+        while(true) {
+            __asm__("hlt");
+        }
+        disable_interrupts();
 
         char checkError[1024];
         if(!Test::selfCheck(checkError)) {

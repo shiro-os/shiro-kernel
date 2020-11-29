@@ -14,6 +14,8 @@ gdtr Gdt::setupGdt() {
     memcpy((char*)entries, (char*)0x800, result.limit);
 
     asm("lgdt %0" : : "m"(result));
+    asm("ljmp $0x8, $.1");
+    asm(".1:");
     asm("mov %ax, 0x10");
     asm("mov %ds, %ax");
     asm("mov %es, %ax");
@@ -21,8 +23,6 @@ gdtr Gdt::setupGdt() {
     asm("mov %gs, %ax");
     asm("mov %ss, %ax");
     asm("mov %ds, %ax");
-    asm("ljmp $0x8, $.1");
-    asm(".1:");
 
     return result;
 }
