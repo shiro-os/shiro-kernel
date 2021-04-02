@@ -30,5 +30,6 @@ int atoi(const char* str);
 int itoa(int num, char* buf, int bufSize);
 
 void memcpy(const char* src, char* dst, int length);
+void memfill(void* src, unsigned char toFill, unsigned int len);
 
 #endif

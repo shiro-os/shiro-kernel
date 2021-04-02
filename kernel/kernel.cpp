@@ -2,10 +2,13 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "utils/multiboot_info.hpp"
+
 #include "io/Terminal.hpp"
 #include "io/SerialIo.hpp"
 #include "io/PortIo.hpp"
 #include "io/RTC.hpp"
+#include "io/MemoryMgmt.hpp"
 #include "shells/IShell.hpp"
 #include "shells/ComShell.hpp"
 #include "test/test.hpp"
@@ -33,9 +36,10 @@ extern "C"
         return result;
     }
 
-    int _entry()
+    int _entry(multiboot_info_t* mbi, unsigned int magic)
     {
         volatile auto gdt = Gdt::setupGdt();
+        MemoryMgmt::init(mbi);
         idt_init();
         // Initialize PIC: All Interrupts disabled by default
         PortIo::writeToPort(0x21, 0xFF);
@@ -50,6 +54,8 @@ extern "C"
         Terminal ctx;
         SerialPort serial = SerialPort(serialPort::COM1).initSerial();
         serial.write((const unsigned char*)"[Shiro] Initialized COM1 Serial connection\r\n");
+
+        auto a = MemoryMgmt::allocateMemory(1024);
 
         ctx.setBgColor(vgaTerminalColor::VGA_COLOR_WHITE)
             .setFgColor(vgaTerminalColor::VGA_COLOR_BLACK)
