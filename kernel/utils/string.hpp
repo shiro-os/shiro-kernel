@@ -8,8 +8,10 @@ private:
     int length;
 public:
     String(const char* str);
+    ~String();
     int getLength();
     void append(const char* str);
+    void append(int i);
     bool equals(const char* str);
     bool equals(String str);
     const char* getData();

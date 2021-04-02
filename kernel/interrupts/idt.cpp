@@ -43,16 +43,21 @@ extern "C" {
         int a = PortIo::readFromPort(0x21);
         int b = PortIo::readFromPort(0xA1);
 
+        // Initializing
         PortIo::writeToPort(0x20, 0x11);
         PortIo::writeToPort(0xA0, 0x11);
+        // Defining offsets
         PortIo::writeToPort(0x21, 0x20);
         PortIo::writeToPort(0xA1, 0x28);
+        // Define IRQ2 as Slave Interrupt
         PortIo::writeToPort(0x21, 0x04);
         PortIo::writeToPort(0xA1, 0x02);
+        // Switch mode
         PortIo::writeToPort(0x21, 0x01);
         PortIo::writeToPort(0xA1, 0x01);
-        PortIo::writeToPort(0x21, 0x00);
-        PortIo::writeToPort(0xA1, 0x00);
+        // Restore masks
+        // PortIo::writeToPort(0x21, 0x00);
+        // PortIo::writeToPort(0xA1, 0x00);
         PortIo::writeToPort(0x21, a);
         PortIo::writeToPort(0xA1, b);
 

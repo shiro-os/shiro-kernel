@@ -7,7 +7,7 @@ SerialPort::SerialPort(serialPort port) {
     this->initSerial();
 }
 
-SerialPort &SerialPort::initSerial() {
+SerialPort* SerialPort::initSerial() {
     PortIo::writeToPort(this->port + 1, 0x00);
     PortIo::writeToPort(this->port + 3, 0x80);
     PortIo::writeToPort(this->port, 0x03);
@@ -15,25 +15,25 @@ SerialPort &SerialPort::initSerial() {
     PortIo::writeToPort(this->port + 3, 0x03);
     PortIo::writeToPort(this->port + 2, 0xC7);
     PortIo::writeToPort(this->port + 4, 0x0B);
-    return *this;
+    return this;
 }
 
-SerialPort &SerialPort::write(const unsigned char* buf, int bufLen) {
+SerialPort* SerialPort::write(const unsigned char* buf, int bufLen) {
     PortIo::writeToPort(this->port, buf, bufLen);
-    return *this;
+    return this;
 }
 
-SerialPort &SerialPort::write(const unsigned char buf) {
+SerialPort* SerialPort::write(const unsigned char buf) {
     PortIo::writeToPort(this->port, buf);
-    return *this;
+    return this;
 }
 
-SerialPort &SerialPort::write(const unsigned char* str) {
+SerialPort* SerialPort::write(const unsigned char* str) {
     PortIo::writeToPort(this->port, str, strlen(str));
-    return *this;
+    return this;
 }
 
-SerialPort &SerialPort::read(unsigned char* buf, int bufLen) {
+SerialPort* SerialPort::read(unsigned char* buf, int bufLen) {
     int read = 0;
     while(read < bufLen) {
         while((PortIo::readFromPort(this->port + 5) & 0x1) == 0);
@@ -41,10 +41,10 @@ SerialPort &SerialPort::read(unsigned char* buf, int bufLen) {
         read++;
     }
 
-    return *this;
+    return this;
 }
 
-SerialPort &SerialPort::readUntil(unsigned char* buf, int bufLen, const unsigned char* pattern, int patternLen) {
+SerialPort* SerialPort::readUntil(unsigned char* buf, int bufLen, const unsigned char* pattern, int patternLen) {
     int read = 0;
     int iP = 0;
     while(read < bufLen) {
@@ -53,18 +53,18 @@ SerialPort &SerialPort::readUntil(unsigned char* buf, int bufLen, const unsigned
 
         if(pattern[iP] == buf[read++]) {
             if(++iP >= patternLen) {
-                return *this;
+                return this;
             }
         } else {
             iP = 0;
         }
     }
 
-    return *this;
+    return this;
 }
 
 
-SerialPort &SerialPort::readNoWait(unsigned char* buf, int bufLen, int* readBytes) {
+SerialPort* SerialPort::readNoWait(unsigned char* buf, int bufLen, int* readBytes) {
     int read = 0;
     while((PortIo::readFromPort(this->port + 5) & 0x1) != 0 && read < bufLen) {
         buf[read] = PortIo::readFromPort(this->port);
@@ -75,5 +75,5 @@ SerialPort &SerialPort::readNoWait(unsigned char* buf, int bufLen, int* readByte
         *readBytes = read;
     }
 
-    return *this;
+    return this;
 }

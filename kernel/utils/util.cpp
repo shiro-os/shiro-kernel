@@ -79,3 +79,9 @@ void memcpy(const char* src, char* dst, int length) {
         dst[i] = src[i];
     }
 }
+
+void memfill(void* src, unsigned char toFill, unsigned int len) {
+    for(unsigned char i = 0; i < len; i++) {
+        *(unsigned char*)(src+i) = toFill;
+    }
+}

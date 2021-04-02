@@ -2,9 +2,13 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "utils/multiboot_info.hpp"
+
 #include "io/Terminal.hpp"
 #include "io/SerialIo.hpp"
 #include "io/PortIo.hpp"
+#include "io/RTC.hpp"
+#include "io/MemoryMgmt.hpp"
 #include "shells/IShell.hpp"
 #include "shells/ComShell.hpp"
 #include "test/test.hpp"
@@ -32,16 +36,33 @@ extern "C"
         return result;
     }
 
-    int _entry()
+    void doInterruptLoop() {
+        enable_interrupts();
+        while(true) {
+            __asm__("hlt");
+        }
+        disable_interrupts();
+    }
+
+    int _entry(multiboot_info_t* mbi, unsigned int magic)
     {
         volatile auto gdt = Gdt::setupGdt();
+        MemoryMgmt::init(mbi);
         idt_init();
-        PortIo::writeToPort(0x21, 0xFD);
+        // Initialize PIC: All Interrupts disabled by default
+        PortIo::writeToPort(0x21, 0xFF);
         PortIo::writeToPort(0xA1, 0xFF);
+        // Initialize PIC: Enable certain interrupts
+        enable_interrupt(1);
+        enable_interrupt(2);
+        enable_interrupt(8);
+        RTC::setFrequency(13);
+        RTC::enableIrq08();
 
         Terminal ctx;
-        SerialPort serial = SerialPort(serialPort::COM1).initSerial();
-        serial.write((const unsigned char*)"[Shiro] Initialized COM1 Serial connection\r\n");
+        SerialPort* serial = (new SerialPort(serialPort::COM1))
+            ->initSerial()
+            ->write((const unsigned char*)"[Shiro] Initialized COM1 Serial connection\r\n");
 
         ctx.setBgColor(vgaTerminalColor::VGA_COLOR_WHITE)
             .setFgColor(vgaTerminalColor::VGA_COLOR_BLACK)
@@ -58,11 +79,7 @@ extern "C"
                 .printLine("[Shiro] A20 Line not set!");
         }
 
-        enable_interrupts();
-        while(true) {
-            __asm__("hlt");
-        }
-        disable_interrupts();
+        doInterruptLoop();
 
         char checkError[1024];
         if(!Test::selfCheck(checkError)) {
@@ -74,12 +91,14 @@ extern "C"
             ctx.setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
                 .printLine("[Shiro] Self-Check succeeded!")
                 .setFgColor(vgaTerminalColor::VGA_COLOR_BLACK);
-            ComShell shell = ComShell(&serial);
+            ComShell* shell = new ComShell(serial);
             ctx.printLine("[Shiro] Initialized Shell on COM1");
-            shell.writeLine("[Shiro] Initialized Shell on COM1");
-            shell.runShell();
+            shell->writeLine("[Shiro] Initialized Shell on COM1");
+            shell->runShell();
+            delete shell;
         }
 
+        delete serial;
         return 0;
     }
 }

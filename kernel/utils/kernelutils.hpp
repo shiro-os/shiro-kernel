@@ -6,4 +6,10 @@
 extern "C" void disable_interrupts();
 extern "C" void enable_interrupts();
 
+void kernel_panic(const char* errmsg);
+
+void enable_interrupt(unsigned char interrupt);
+void disable_interrupt(unsigned char interrupt);
+
+
 #endif
