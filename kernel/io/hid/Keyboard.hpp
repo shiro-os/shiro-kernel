@@ -7,7 +7,6 @@ class Keyboard {
 public:
     static void onIrq01(unsigned char charIn);
 private:
-
 };
 
 #endif

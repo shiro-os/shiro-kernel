@@ -5,6 +5,7 @@
 #include "io/Terminal.hpp"
 #include "io/SerialIo.hpp"
 #include "io/PortIo.hpp"
+#include "io/RTC.hpp"
 #include "shells/IShell.hpp"
 #include "shells/ComShell.hpp"
 #include "test/test.hpp"
@@ -36,9 +37,15 @@ extern "C"
     {
         volatile auto gdt = Gdt::setupGdt();
         idt_init();
-        // Initialize PIC
-        PortIo::writeToPort(0x21, 0xFD);
+        // Initialize PIC: All Interrupts disabled by default
+        PortIo::writeToPort(0x21, 0xFF);
         PortIo::writeToPort(0xA1, 0xFF);
+        // Initialize PIC: Enable certain interrupts
+        enable_interrupt(1);
+        enable_interrupt(2);
+        enable_interrupt(8);
+        RTC::setFrequency(14);
+        RTC::enableIrq08();
 
         Terminal ctx;
         SerialPort serial = SerialPort(serialPort::COM1).initSerial();

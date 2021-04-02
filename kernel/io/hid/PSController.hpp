@@ -10,7 +10,10 @@ public:
     static void reset();
     static void selfTest();
     static void interfaceTest();
+    static void writePort(unsigned char port, unsigned char byte);
 private:
+    static void writePortOne(unsigned char byte);
+    static void writePortTwo(unsigned char byte);
 };
 
 #endif

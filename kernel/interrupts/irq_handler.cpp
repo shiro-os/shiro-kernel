@@ -2,6 +2,7 @@
 #include "../io/PortIo.hpp"
 #include "../io/SerialIo.hpp"
 #include "../io/hid/Keyboard.hpp"
+#include "../io/RTC.hpp"
 
 void irq00_handler() {
     PortIo::writeToPort(0x20, 0x20);
@@ -40,6 +41,7 @@ void irq07_handler() {
 
 void irq08_handler() {
     PortIo::writeToPort(0xA0, 0x20);
+    RTC::onIrq08();
     PortIo::writeToPort(0x20, 0x20);
 }
 
