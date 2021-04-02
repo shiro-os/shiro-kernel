@@ -49,7 +49,7 @@ MemoryPageDetails MemoryMgmt::allocateMemory(unsigned long length) {
                 lastDetails = pageDetails;
             }
         }
-        mpd->startAddress = lastDetails.startAddress + lastDetails.length;
+        mpd->startAddress = (void*)((unsigned long)lastDetails.startAddress + lastDetails.length);
     }
     mpd->length = length;
     mpd->allocated = true;

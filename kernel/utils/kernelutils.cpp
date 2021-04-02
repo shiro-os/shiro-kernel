@@ -3,15 +3,16 @@
 #include "../io/Terminal.hpp"
 
 void kernel_panic(const char* errmsg) {
-    Terminal ctx;
+    Terminal* ctx = new Terminal();
 
-    ctx
-        .setBgColor(vgaTerminalColor::VGA_COLOR_RED)
-        .setFgColor(vgaTerminalColor::VGA_COLOR_WHITE)
-        .clear()
-        .setPointer(0, 0)
-        .printLine("SHIRO KERNEL PANIC").printLine("")
-        .printLine(errmsg);
+    ctx->setBgColor(vgaTerminalColor::VGA_COLOR_RED)
+        ->setFgColor(vgaTerminalColor::VGA_COLOR_WHITE)
+        ->clear()
+        ->setPointer(0, 0)
+        ->printLine("SHIRO KERNEL PANIC")->printLine("")
+        ->printLine(errmsg);
+
+    delete ctx;
 
     while(true);
 }

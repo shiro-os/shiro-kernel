@@ -82,6 +82,6 @@ void memcpy(const char* src, char* dst, int length) {
 
 void memfill(void* src, unsigned char toFill, unsigned int len) {
     for(unsigned char i = 0; i < len; i++) {
-        *(unsigned char*)(src+i) = toFill;
+        *(unsigned char*)((unsigned long)src + i) = toFill;
     }
 }

@@ -57,7 +57,7 @@ public:
      * color
      * @return Terminal&
      */
-    Terminal &clear();
+    Terminal* clear();
 
     /**
      * @brief Clears a line, removes Background and foreground color.
@@ -65,7 +65,7 @@ public:
      * @param lineNumber
      * @return Terminal&
      */
-    Terminal &clearLine(size_t /* Line to clear */ lineNumber);
+    Terminal* clearLine(size_t /* Line to clear */ lineNumber);
 
     /**
      * @brief Clears a section of the terminal from starting point until end of terminal
@@ -73,7 +73,7 @@ public:
      * @param start
      * @return Terminal&
      */
-    Terminal &clearSection(size_t /*Section to Start with */ start);
+    Terminal* clearSection(size_t /*Section to Start with */ start);
 
     /**
      * @brief Clears a section of the terminal from starting pointer until endpoint.
@@ -82,7 +82,7 @@ public:
      * @param end
      * @return Terminal&
      */
-    Terminal &clearSection(size_t /*Section to Start with */ start, size_t /* Section to stop */ end);
+    Terminal* clearSection(size_t /*Section to Start with */ start, size_t /* Section to stop */ end);
 
     /**
      * @brief Set the Color which should be used for text
@@ -91,7 +91,7 @@ public:
      * @param color
      * @return Terminal&
      */
-    Terminal &setFgColor(vgaTerminalColor color);
+    Terminal* setFgColor(vgaTerminalColor color);
 
     /**
      * @brief Set the Backgroundcolor which should be used as the color behind text.
@@ -100,7 +100,7 @@ public:
      * @param color
      * @return Terminal&
      */
-    Terminal &setBgColor(vgaTerminalColor color);
+    Terminal* setBgColor(vgaTerminalColor color);
 
     /**
      * @brief Prints text on the current offset.
@@ -108,7 +108,7 @@ public:
      * @param str
      * @return Terminal&
      */
-    Terminal &print(const char* str);
+    Terminal* print(const char* str);
 
     /**
      * @brief Prints a char on the specified coordinates.
@@ -116,7 +116,7 @@ public:
      * @param str
      * @return Terminal&
      */
-    Terminal &setCharAt(size_t x, size_t y, const char c);
+    Terminal* setCharAt(size_t x, size_t y, const char c);
 
     /**
      * @brief Prints text on the current offset, and updates the offset to x=0; y=currentLine+1
@@ -124,7 +124,7 @@ public:
      * @param str
      * @return Terminal&
      */
-    Terminal &printLine(const char* str);
+    Terminal* printLine(const char* str);
 
     /**
      * @brief Sets the current offset to the specified coordinates
@@ -133,10 +133,10 @@ public:
      * @param y
      * @return Terminal&
      */
-    Terminal &setPointer(size_t x, size_t y);
+    Terminal* setPointer(size_t x, size_t y);
 
-    Terminal &setVgaCursor(size_t offset);
-    Terminal &setVgaCursor(size_t x, size_t y);
+    Terminal* setVgaCursor(size_t offset);
+    Terminal* setVgaCursor(size_t x, size_t y);
 
     static void normalizeString(const char* str, char* normalizedString);
 

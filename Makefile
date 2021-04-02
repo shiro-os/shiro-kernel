@@ -16,7 +16,8 @@ cppOutput = ./bin/kernel/kernel.o \
 		./bin/kernel/test/test.o \
 		./bin/kernel/interrupts/idt.o \
 		./bin/kernel/interrupts/irq_handler.o \
-		./bin/kernel/interrupts/interrupt_utils.o
+		./bin/kernel/interrupts/interrupt_utils.o \
+		./bin/kernel/logic/EventEmitter.o
 
 cOutput = ./bin/kernel/utils/math.o
 

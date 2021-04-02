@@ -59,40 +59,40 @@ extern "C"
         RTC::setFrequency(13);
         RTC::enableIrq08();
 
-        Terminal ctx;
+        Terminal* ctx = new Terminal();
         SerialPort* serial = (new SerialPort(serialPort::COM1))
             ->initSerial()
             ->write((const unsigned char*)"[Shiro] Initialized COM1 Serial connection\r\n");
 
-        ctx.setBgColor(vgaTerminalColor::VGA_COLOR_WHITE)
-            .setFgColor(vgaTerminalColor::VGA_COLOR_BLACK)
-            .clear();
+        ctx->setBgColor(vgaTerminalColor::VGA_COLOR_WHITE)
+            ->setFgColor(vgaTerminalColor::VGA_COLOR_BLACK)
+            ->clear();
 
-        ctx.setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
-            .printLine("[Shiro] Shiro Kernel initialized")
-            .printLine("[Shiro] Starting self-check...");
+        ctx->setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
+            ->printLine("[Shiro] Shiro Kernel initialized")
+            ->printLine("[Shiro] Starting self-check...");
 
         if(testA20()) {
-            ctx.printLine("[Shiro] A20 Line set!");
+            ctx->printLine("[Shiro] A20 Line set!");
         } else {
-            ctx.setFgColor(vgaTerminalColor::VGA_COLOR_RED)
-                .printLine("[Shiro] A20 Line not set!");
+            ctx->setFgColor(vgaTerminalColor::VGA_COLOR_RED)
+                ->printLine("[Shiro] A20 Line not set!");
         }
 
         doInterruptLoop();
 
         char checkError[1024];
         if(!Test::selfCheck(checkError)) {
-            ctx.setFgColor(vgaTerminalColor::VGA_COLOR_RED)
-                .printLine("[Shiro] Self-Check failed! Error:")
-                .printLine(checkError);
+            ctx->setFgColor(vgaTerminalColor::VGA_COLOR_RED)
+                ->printLine("[Shiro] Self-Check failed! Error:")
+                ->printLine(checkError);
             return 1;
         } else {
-            ctx.setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
-                .printLine("[Shiro] Self-Check succeeded!")
-                .setFgColor(vgaTerminalColor::VGA_COLOR_BLACK);
+            ctx->setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
+                ->printLine("[Shiro] Self-Check succeeded!")
+                ->setFgColor(vgaTerminalColor::VGA_COLOR_BLACK);
             ComShell* shell = new ComShell(serial);
-            ctx.printLine("[Shiro] Initialized Shell on COM1");
+            ctx->printLine("[Shiro] Initialized Shell on COM1");
             shell->writeLine("[Shiro] Initialized Shell on COM1");
             shell->runShell();
             delete shell;

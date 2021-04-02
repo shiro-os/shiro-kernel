@@ -18,7 +18,7 @@ Terminal::Terminal()
     Terminal::clear();
 }
 
-Terminal &Terminal::clear()
+Terminal* Terminal::clear()
 {
     uint8_t *screen = ((uint8_t*)0xb8000);
     for(auto screenItr = 0; screenItr <= CON_HEIGHT * CON_WIDTH; screenItr++) {
@@ -28,25 +28,25 @@ Terminal &Terminal::clear()
 
     this->currentIndex = 0;
     this->setVgaCursor(this->currentIndex);
-    return *this;
+    return this;
 }
 
-Terminal &Terminal::setFgColor(vgaTerminalColor color) {
+Terminal* Terminal::setFgColor(vgaTerminalColor color) {
     this->foregroundColor = color;
-    return *this;
+    return this;
 }
 
-Terminal &Terminal::setBgColor(vgaTerminalColor color) {
+Terminal* Terminal::setBgColor(vgaTerminalColor color) {
     this->backgroundColor = color;
-    return *this;
+    return this;
 }
 
-Terminal &Terminal::setCharAt(size_t x, size_t y, const char c) {
+Terminal* Terminal::setCharAt(size_t x, size_t y, const char c) {
     *((uint8_t*)0xb8000 + this->pointToIndex(x, y) * 2) = c;
-    return *this;
+    return this;
 }
 
-Terminal &Terminal::print(const char* str) {
+Terminal* Terminal::print(const char* str) {
     uint8_t *screen =((uint8_t*)0xb8000) + this->currentIndex * 2;
     size_t index = 0;
     while (str[index] != 0)
@@ -59,13 +59,13 @@ Terminal &Terminal::print(const char* str) {
         screen = screen + 2;
         index = index + 1;
     }
-    return *this;
+    return this;
 }
 
-Terminal &Terminal::printLine(const char* str) {
+Terminal* Terminal::printLine(const char* str) {
     this->print(str);
     this->currentIndex = pointToIndex(0, this->getIndexPosY() + 1);
-    return *this;
+    return this;
 }
 
 size_t Terminal::getIndexPosX() {
@@ -80,23 +80,23 @@ size_t Terminal::pointToIndex(size_t x, size_t y) {
     return y * CON_WIDTH + x;
 }
 
-Terminal &Terminal::setPointer(size_t x, size_t y) {
+Terminal* Terminal::setPointer(size_t x, size_t y) {
     this->currentIndex = this->pointToIndex(x, y);
-    return *this;
+    return this;
 }
 
-Terminal &Terminal::setVgaCursor(size_t x, size_t y) {
+Terminal* Terminal::setVgaCursor(size_t x, size_t y) {
     size_t offset = this->pointToIndex(x, y);
     this->setVgaCursor(offset);
-    return *this;
+    return this;
 }
 
-Terminal &Terminal::setVgaCursor(size_t offset) {
+Terminal* Terminal::setVgaCursor(size_t offset) {
     PortIo::writeToPort(0x3D4, 0xE);
     PortIo::writeToPort(0x3D5, (unsigned char) (offset >> 8));
     PortIo::writeToPort(0x3D4, 0xF);
     PortIo::writeToPort(0x3D5, (unsigned char) (offset));
-    return *this;
+    return this;
 }
 
 void Terminal::normalizeString(const char* str, char* normalizedString) {
