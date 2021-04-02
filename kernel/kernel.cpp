@@ -36,6 +36,14 @@ extern "C"
         return result;
     }
 
+    void doInterruptLoop() {
+        enable_interrupts();
+        while(true) {
+            __asm__("hlt");
+        }
+        disable_interrupts();
+    }
+
     int _entry(multiboot_info_t* mbi, unsigned int magic)
     {
         volatile auto gdt = Gdt::setupGdt();
@@ -48,12 +56,13 @@ extern "C"
         enable_interrupt(1);
         enable_interrupt(2);
         enable_interrupt(8);
-        RTC::setFrequency(14);
+        RTC::setFrequency(13);
         RTC::enableIrq08();
 
         Terminal ctx;
-        SerialPort serial = SerialPort(serialPort::COM1).initSerial();
-        serial.write((const unsigned char*)"[Shiro] Initialized COM1 Serial connection\r\n");
+        SerialPort* serial = (new SerialPort(serialPort::COM1))
+            ->initSerial()
+            ->write((const unsigned char*)"[Shiro] Initialized COM1 Serial connection\r\n");
 
         ctx.setBgColor(vgaTerminalColor::VGA_COLOR_WHITE)
             .setFgColor(vgaTerminalColor::VGA_COLOR_BLACK)
@@ -70,11 +79,7 @@ extern "C"
                 .printLine("[Shiro] A20 Line not set!");
         }
 
-        enable_interrupts();
-        while(true) {
-            __asm__("hlt");
-        }
-        disable_interrupts();
+        doInterruptLoop();
 
         char checkError[1024];
         if(!Test::selfCheck(checkError)) {
@@ -86,12 +91,14 @@ extern "C"
             ctx.setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
                 .printLine("[Shiro] Self-Check succeeded!")
                 .setFgColor(vgaTerminalColor::VGA_COLOR_BLACK);
-            ComShell shell = ComShell(&serial);
+            ComShell* shell = new ComShell(serial);
             ctx.printLine("[Shiro] Initialized Shell on COM1");
-            shell.writeLine("[Shiro] Initialized Shell on COM1");
-            shell.runShell();
+            shell->writeLine("[Shiro] Initialized Shell on COM1");
+            shell->runShell();
+            delete shell;
         }
 
+        delete serial;
         return 0;
     }
 }

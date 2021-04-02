@@ -1,5 +1,6 @@
 #include "MemoryMgmt.hpp"
 #include "../utils/util.hpp"
+#include "../utils/kernelutils.hpp"
 
 multiboot_info_t* MemoryMgmt::mbi;
 MemoryPageDetails MemoryMgmt::memoryPages[MEM_PAGE_DETAILS_SIZE];
@@ -7,6 +8,16 @@ MemoryPageDetails MemoryMgmt::memoryPages[MEM_PAGE_DETAILS_SIZE];
 void * operator new(unsigned int size)
 {
     return MemoryMgmt::allocateMemory(size).startAddress;
+}
+
+void * operator new[](unsigned int size)
+{
+    return MemoryMgmt::allocateMemory(size).startAddress;
+}
+
+void operator delete[](void * p)
+{
+    MemoryMgmt::deallocateMemory(p);
 }
 
 void operator delete(void * p)
@@ -26,6 +37,9 @@ void MemoryMgmt::init(multiboot_info_t* mbi) {
 
 MemoryPageDetails MemoryMgmt::allocateMemory(unsigned long length) {
     MemoryPageDetails* mpd = MemoryMgmt::getFistEmptyPage(length);
+    if(mpd == 0) {
+        kernel_panic("Failed to find empty memory page");
+    }
     if(mpd->startAddress == 0) {
         MemoryPageDetails lastDetails;
         for(int i = 0; i < MEM_PAGE_DETAILS_SIZE; i++) {
@@ -45,10 +59,11 @@ MemoryPageDetails MemoryMgmt::allocateMemory(unsigned long length) {
 MemoryPageDetails* MemoryMgmt::getFistEmptyPage(unsigned long minLength) {
     for(int i = 0; i < MEM_PAGE_DETAILS_SIZE; i++) {
         MemoryPageDetails pageDetails = MemoryMgmt::memoryPages[i];
-        if(pageDetails.startAddress == 0 && (pageDetails.length == 0 || pageDetails.length >= minLength)) {
-            return (MemoryPageDetails*) (MemoryMgmt::memoryPages + sizeof(MemoryPageDetails)*i);
+        if(!pageDetails.allocated && (pageDetails.length == 0 || pageDetails.length >= minLength)) {
+            return (MemoryPageDetails*) (MemoryMgmt::memoryPages + i);
         }
     }
+    return 0;
 }
 
 void MemoryMgmt::deallocateMemory(MemoryPageDetails mpd) {
@@ -61,9 +76,8 @@ void MemoryMgmt::deallocateMemory(void* mpd) {
     if(mpd == 0x00) return;
 
     for(int i = 0; i < MEM_PAGE_DETAILS_SIZE; i++) {
-        MemoryPageDetails pageDetails = MemoryMgmt::memoryPages[i];
-        if(pageDetails.startAddress == mpd) {
-            pageDetails.allocated = false;
+        if(MemoryMgmt::memoryPages[i].startAddress == mpd) {
+            MemoryMgmt::memoryPages[i].allocated = false;
             return;
         }
     }

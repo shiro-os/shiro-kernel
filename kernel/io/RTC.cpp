@@ -1,6 +1,7 @@
 #include "RTC.hpp"
 #include "PortIo.hpp"
 #include "../utils/kernelutils.hpp"
+#include "../utils/string.hpp"
 
 long RTC::currentTime = 0;
 long RTC::currentTick = 0;
@@ -29,7 +30,9 @@ void RTC::onIrq08() {
 
 void RTC::setFrequency(unsigned char frequency) {
     if(frequency < 3 || frequency > 15) {
-        kernel_panic("Tried to set RTC to an invalid frequency");
+        String errStr = String("Tried to set RTC to an invalid frequency: ");
+        errStr.append(frequency);
+        kernel_panic(errStr.getData());
     }
 
     unsigned char rate = frequency & 0x0F;

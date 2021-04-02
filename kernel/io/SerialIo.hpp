@@ -11,14 +11,14 @@ enum serialPort {
 class SerialPort {
     public:
         SerialPort(serialPort port);
-        SerialPort &initSerial();
-        SerialPort &write(const unsigned char* buf, int bufLen);
-        SerialPort &write(const unsigned char* str);
-        SerialPort &write(const unsigned char buf);
+        SerialPort* initSerial();
+        SerialPort* write(const unsigned char* buf, int bufLen);
+        SerialPort* write(const unsigned char* str);
+        SerialPort* write(const unsigned char buf);
 
-        SerialPort &read(unsigned char* buf, int bufLen);
-        SerialPort &readUntil(unsigned char* buf, int bufLen, const unsigned char* pattern, int patternLen);
-        SerialPort &readNoWait(unsigned char* buf, int bufLen, int* readBytes);
+        SerialPort* read(unsigned char* buf, int bufLen);
+        SerialPort* readUntil(unsigned char* buf, int bufLen, const unsigned char* pattern, int patternLen);
+        SerialPort* readNoWait(unsigned char* buf, int bufLen, int* readBytes);
 
     private:
         serialPort port;
