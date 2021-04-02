@@ -5,8 +5,9 @@
 
 class Keyboard {
 public:
-    static int onIrq01(unsigned char charIn);
+    static void onIrq01(unsigned char charIn);
 private:
+
 };
 
 #endif
