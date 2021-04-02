@@ -38,10 +38,17 @@ MemoryPageDetails* MemoryMgmt::getFistEmptyPage(unsigned long minLength) {
 
 void MemoryMgmt::deallocateMemory(MemoryPageDetails mpd) {
     if(mpd.startAddress == 0x00) return;
+    MemoryMgmt::deallocateMemory(mpd.startAddress);
+}
+
+void MemoryMgmt::deallocateMemory(void* mpd) {
+    if(mpd == 0x00) return;
 
     for(int i = 0; i < MEM_PAGE_DETAILS_SIZE; i++) {
-        if(MemoryMgmt::memoryPages[i].startAddress == mpd.startAddress) {
-            MemoryMgmt::memoryPages[i].allocated = false;
+        MemoryPageDetails pageDetails = MemoryMgmt::memoryPages[i];
+        if(pageDetails.startAddress == mpd) {
+            pageDetails.allocated = false;
+            return;
         }
     }
 }

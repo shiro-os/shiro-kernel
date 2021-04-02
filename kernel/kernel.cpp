@@ -56,6 +56,8 @@ extern "C"
         serial.write((const unsigned char*)"[Shiro] Initialized COM1 Serial connection\r\n");
 
         auto a = MemoryMgmt::allocateMemory(1024);
+        MemoryMgmt::deallocateMemory(a);
+        a = MemoryMgmt::allocateMemory(1024);
 
         ctx.setBgColor(vgaTerminalColor::VGA_COLOR_WHITE)
             .setFgColor(vgaTerminalColor::VGA_COLOR_BLACK)

@@ -14,6 +14,7 @@ public:
     static MemoryPageDetails memoryPages[MEM_PAGE_DETAILS_SIZE];
     static MemoryPageDetails allocateMemory(unsigned long length);
     static void deallocateMemory(MemoryPageDetails mpd);
+    static void deallocateMemory(void* mpd);
     static void init(multiboot_info_t* mbi);
 private:
     static multiboot_info_t* mbi;
