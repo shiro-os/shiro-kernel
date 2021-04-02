@@ -4,6 +4,21 @@
 multiboot_info_t* MemoryMgmt::mbi;
 MemoryPageDetails MemoryMgmt::memoryPages[MEM_PAGE_DETAILS_SIZE];
 
+void * operator new(unsigned int size)
+{
+    return MemoryMgmt::allocateMemory(size).startAddress;
+}
+
+void operator delete(void * p)
+{
+    MemoryMgmt::deallocateMemory(p);
+}
+
+void operator delete(void * p, unsigned int size)
+{
+    MemoryMgmt::deallocateMemory(p);
+}
+
 void MemoryMgmt::init(multiboot_info_t* mbi) {
     MemoryMgmt::mbi = mbi;
     MemoryMgmt::memoryPages[0].startAddress = (void*)mbi->mem_lower;
@@ -31,13 +46,14 @@ MemoryPageDetails* MemoryMgmt::getFistEmptyPage(unsigned long minLength) {
     for(int i = 0; i < MEM_PAGE_DETAILS_SIZE; i++) {
         MemoryPageDetails pageDetails = MemoryMgmt::memoryPages[i];
         if(pageDetails.startAddress == 0 && (pageDetails.length == 0 || pageDetails.length >= minLength)) {
-            return (MemoryPageDetails*) ((void*)MemoryMgmt::memoryPages + sizeof(MemoryPageDetails)*i);
+            return (MemoryPageDetails*) (MemoryMgmt::memoryPages + sizeof(MemoryPageDetails)*i);
         }
     }
 }
 
 void MemoryMgmt::deallocateMemory(MemoryPageDetails mpd) {
     if(mpd.startAddress == 0x00) return;
+    memfill(mpd.startAddress, 0x00, mpd.length);
     MemoryMgmt::deallocateMemory(mpd.startAddress);
 }
 
