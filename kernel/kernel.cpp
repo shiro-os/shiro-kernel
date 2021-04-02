@@ -55,9 +55,6 @@ extern "C"
         SerialPort serial = SerialPort(serialPort::COM1).initSerial();
         serial.write((const unsigned char*)"[Shiro] Initialized COM1 Serial connection\r\n");
 
-        auto a = new Terminal();
-        delete a;
-
         ctx.setBgColor(vgaTerminalColor::VGA_COLOR_WHITE)
             .setFgColor(vgaTerminalColor::VGA_COLOR_BLACK)
             .clear();
