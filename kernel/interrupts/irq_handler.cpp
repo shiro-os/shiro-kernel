@@ -2,6 +2,7 @@
 #include "../types.h"
 #include "../io/PortIo.hpp"
 #include "../io/SerialIo.hpp"
+#include "../io/hid/Keyboard.hpp"
 
 void irq00_handler() {
     PortIo::writeToPort(0x20, 0x20);
@@ -11,6 +12,7 @@ void irq01_handler() {
     uint8_t keyboardStatus = PortIo::readFromPort(0x64);
     if(keyboardStatus & 0x01) {
         uint8_t pressedChar = PortIo::readFromPort(0x60);
+        Keyboard::onIrq01(pressedChar);
     }
 
     PortIo::writeToPort(0x20, 0x20);

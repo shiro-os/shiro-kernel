@@ -6,6 +6,7 @@ cppOutput = ./bin/kernel/kernel.o \
 		./bin/kernel/utils/gdt.o \
 		./bin/kernel/io/PortIo.o \
 		./bin/kernel/io/SerialIo.o \
+		./bin/kernel/io/hid/Keyboard.o \
 		./bin/kernel/shells/ComShell.o \
 		./bin/kernel/shells/ShellCommandExecutor.o \
 		./bin/kernel/test/assert.o \
@@ -50,7 +51,7 @@ $(asmOutput):
 	cp -p ./cfg/grub.cfg ./isodir/boot/grub/grub.cfg
 	grub-mkrescue -o ./bin/shiro.iso ./isodir > /dev/null
 
+
 afterBuild: ./bin/shiro.iso
 	rm -rf ./bin/kernel
-	rm -rf ./bin/shiro.bin
 	rm -rf ./isodir

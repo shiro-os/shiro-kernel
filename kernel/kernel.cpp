@@ -36,6 +36,7 @@ extern "C"
     {
         volatile auto gdt = Gdt::setupGdt();
         idt_init();
+        // Initialize PIC
         PortIo::writeToPort(0x21, 0xFD);
         PortIo::writeToPort(0xA1, 0xFF);
 
