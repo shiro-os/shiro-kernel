@@ -1,17 +1,23 @@
 #include "RTC.hpp"
 #include "PortIo.hpp"
 #include "../utils/kernelutils.hpp"
-#include "../utils/string.hpp"
 
-long RTC::currentTime = 0;
-long RTC::currentTick = 0;
+RTC* RTC::instance = 0;
+
+RTC* RTC::getInstance() {
+    if(RTC::instance) {
+        return RTC::instance;
+    }
+
+    return RTC::instance = new RTC();
+}
 
 long RTC::getCurrentTime() {
-    return RTC::currentTime;
+    return this->currentTime;
 }
 
 long RTC::getTick() {
-    return RTC::currentTick;
+    return this->currentTick;
 }
 
 void RTC::enableIrq08() {
@@ -25,14 +31,13 @@ void RTC::onIrq08() {
     // If we don't read this, IRQ08 doesn't get fired again in some cases
     PortIo::writeToPort(0x70, 0x0C);
     PortIo::readFromPort(0x71);
-    RTC::currentTick++;
+    this->currentTick++;
+    this->emit("tick");
 }
 
 void RTC::setFrequency(unsigned char frequency) {
     if(frequency < 3 || frequency > 15) {
-        String errStr = String("Tried to set RTC to an invalid frequency: ");
-        errStr.append(frequency);
-        kernel_panic(errStr.getData());
+        kernel_panic("Tried to set RTC to an invalid frequency.");
     }
 
     unsigned char rate = frequency & 0x0F;

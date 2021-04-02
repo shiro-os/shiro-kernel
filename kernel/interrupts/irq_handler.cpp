@@ -12,7 +12,7 @@ void irq01_handler() {
     PortIo::writeToPort(0x20, 0x20);
     unsigned char pressedChar = PortIo::readFromPort(0x60);
     PortIo::writeToPort(0x20, 0x20);
-    Keyboard::onIrq01(pressedChar);
+    Keyboard::getInstance()->onIrq01(pressedChar);
 }
 
 void irq02_handler() {
@@ -41,7 +41,7 @@ void irq07_handler() {
 
 void irq08_handler() {
     PortIo::writeToPort(0xA0, 0x20);
-    RTC::onIrq08();
+    RTC::getInstance()->onIrq08();
     PortIo::writeToPort(0x20, 0x20);
 }
 

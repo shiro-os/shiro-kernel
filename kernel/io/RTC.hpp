@@ -1,5 +1,6 @@
 #ifndef __RTC_HPP_
 #define __RTC_HPP_
+#include "../logic/EventEmitter.hpp"
 
 /*
     See: https://www.lowlevel.eu/wiki/CMOS#Statusregister_A
@@ -20,16 +21,18 @@
     15 ->          2 Hz 	 500      ms
 */
 
-class RTC {
+class RTC : public EventEmitter {
 public:
-    static long getTick();
-    static long getCurrentTime();
-    static void enableIrq08();
-    static void onIrq08();
-    static void setFrequency(unsigned char frequency);
+    static RTC* getInstance();
+    long getTick();
+    long getCurrentTime();
+    void enableIrq08();
+    void onIrq08();
+    void setFrequency(unsigned char frequency);
 private:
-    static long currentTime;
-    static long currentTick;
+    static RTC* instance;
+    long currentTime;
+    long currentTick;
 };
 
 #endif
