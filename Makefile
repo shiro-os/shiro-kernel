@@ -6,6 +6,7 @@ cppOutput = ./bin/kernel/kernel.o \
 		./bin/kernel/utils/gdt.o \
 		./bin/kernel/io/PortIo.o \
 		./bin/kernel/io/SerialIo.o \
+		./bin/kernel/io/hid/PSController.o \
 		./bin/kernel/io/hid/Keyboard.o \
 		./bin/kernel/shells/ComShell.o \
 		./bin/kernel/shells/ShellCommandExecutor.o \
