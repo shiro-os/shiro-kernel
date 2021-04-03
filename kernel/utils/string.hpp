@@ -1,6 +1,6 @@
 #ifndef __STRING_HPP_
 #define __STRING_HPP_
-#include "../utils/util.hpp"
+#include "util.hpp"
 
 class String {
 private:

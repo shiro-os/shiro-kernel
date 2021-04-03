@@ -10,6 +10,8 @@ cppOutput = ./bin/kernel/kernel.o \
 		./bin/kernel/io/MemoryMgmt.o \
 		./bin/kernel/io/hid/PSController.o \
 		./bin/kernel/io/hid/Keyboard.o \
+		./bin/kernel/io/hid/layouts/IKeyboardLayout.o \
+		./bin/kernel/io/hid/layouts/GermanKeyboardLayout.o \
 		./bin/kernel/shells/ComShell.o \
 		./bin/kernel/shells/ShellCommandExecutor.o \
 		./bin/kernel/test/assert.o \

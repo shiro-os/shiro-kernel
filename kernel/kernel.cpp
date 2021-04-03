@@ -19,6 +19,7 @@
 #include "interrupts/interrupt_utils.hpp"
 #include "logic/EventEmitter.hpp"
 #include "io/hid/Keyboard.hpp"
+#include "io/hid/layouts/GermanKeyboardLayout.hpp"
 
 extern "C"
 {
@@ -87,11 +88,22 @@ extern "C"
         args[0] = (unsigned int) arg;
         args[1] = (unsigned int) ctx;
         Keyboard::getInstance()->on("irq", [](unsigned int thisObj, unsigned int* args, unsigned int* eventArgs) {
+            KeypressEvent* event = (KeypressEvent*)eventArgs;
+            GermanKeyboardLayout* deLayout = GermanKeyboardLayout::getInstance();
+            KeyMapping mapping = deLayout->getMapping(event->getRaw());
+
             Terminal* term = (Terminal*)args[1];
-            char res[10];
-            itoa((int)eventArgs, res, 10);
             term->setBgColor(VGA_COLOR_BLUE);
-            term->printLine(res);
+            term->clear();
+
+            if(mapping.mapped != 0 && mapping.label) {
+                term->printLine(mapping.label->getData());
+            }
+            else {
+                char res[10];
+                itoa(event->getRaw(), res, 10);
+                term->printLine(res);
+            }
         }, args, 0);
         doInterruptLoop();
 
