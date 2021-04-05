@@ -10,9 +10,8 @@ void irq00_handler() {
 
 void irq01_handler() {
     PortIo::writeToPort(0x20, 0x20);
-    unsigned char pressedChar = PortIo::readFromPort(0x60);
+    Keyboard::getInstance()->onIrq01();
     PortIo::writeToPort(0x20, 0x20);
-    Keyboard::getInstance()->onIrq01(pressedChar);
 }
 
 void irq02_handler() {

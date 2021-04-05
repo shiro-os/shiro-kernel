@@ -21,7 +21,7 @@
     15 ->          2 Hz 	 500      ms
 */
 
-class RTC : public EventEmitter {
+class RTC : public EventEmitter<int> {
 public:
     static RTC* getInstance();
     long getTick();

@@ -59,6 +59,7 @@ extern "C"
         enable_interrupt(1);
         enable_interrupt(2);
         enable_interrupt(8);
+        enable_interrupt(12);
         RTC::getInstance()->setFrequency(13);
         RTC::getInstance()->enableIrq08();
 
@@ -70,29 +71,11 @@ extern "C"
             ->setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
             ->printLine("[Shiro] Shiro Kernel initialized");
 
-        /*
-        char* arg = "tick";
-        unsigned int* args = new unsigned int[2];
-        args[0] = (unsigned int) arg;
-        args[1] = (unsigned int) ctx;
-
-        RTC::getInstance()->on("tick", [](unsigned int thisObj, unsigned int* args, unsigned int* eventArgs) {
-            Terminal* term = (Terminal*)args[1];
-            term->setBgColor(VGA_COLOR_BLUE);
-            term->printLine((const char*)args[0]);
-        }, args, 0);
-        */
-
-        char* arg = "key";
-        unsigned int* args = new unsigned int[2];
-        args[0] = (unsigned int) arg;
-        args[1] = (unsigned int) ctx;
-        Keyboard::getInstance()->on("irq", [](unsigned int thisObj, unsigned int* args, unsigned int* eventArgs) {
-            KeypressEvent* event = (KeypressEvent*)eventArgs;
+        Keyboard::getInstance()->on("irq", [](void* thisObj, KeypressEvent event) {
             GermanKeyboardLayout* deLayout = GermanKeyboardLayout::getInstance();
-            KeyMapping mapping = deLayout->getMapping(event->getRaw());
+            KeyMapping mapping = deLayout->getMapping(event.raw);
 
-            Terminal* term = (Terminal*)args[1];
+            Terminal* term = (Terminal*)thisObj;
             term->setBgColor(VGA_COLOR_BLUE);
             term->clear();
 
@@ -101,10 +84,10 @@ extern "C"
             }
             else {
                 char res[10];
-                itoa(event->getRaw(), res, 10);
+                itoa(event.raw, res, 10);
                 term->printLine(res);
             }
-        }, args, 0);
+        }, (void*)ctx);
         doInterruptLoop();
 
         return 0;
