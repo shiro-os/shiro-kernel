@@ -75,9 +75,12 @@ extern "C"
             GermanKeyboardLayout* deLayout = GermanKeyboardLayout::getInstance();
             KeyMapping mapping = deLayout->getMapping(event.raw);
 
+            if(event.bIsPressing) return;
+
             Terminal* term = (Terminal*)thisObj;
             term->setBgColor(VGA_COLOR_BLUE);
             term->clear();
+
 
             if(mapping.mapped != 0 && mapping.label) {
                 term->printLine(mapping.label->getData());

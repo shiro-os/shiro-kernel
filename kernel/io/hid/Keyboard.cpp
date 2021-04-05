@@ -11,7 +11,6 @@ Keyboard* Keyboard::getInstance() {
     return Keyboard::instance = new Keyboard();
 }
 
-
 void Keyboard::onIrq01() {
     unsigned char charIn = PortIo::readFromPort(0x60);
     KeypressEvent kpe = KeypressEvent(charIn);
@@ -20,9 +19,6 @@ void Keyboard::onIrq01() {
 
 KeypressEvent::KeypressEvent(unsigned char charIn) {
     this->raw = charIn;
-    // TODO: REWORK!!!
-    // This is not how you're supposed to do it, and it's also
-    // extremely buggy if not unusable this way.
-    this->bIsPressing = this->raw & 0x80 > 0;
-    this->bIsReleasing = !this->bIsPressing;
+    this->bIsReleasing = (this->raw & 0x80) > 0;
+    this->bIsPressing = !this->bIsReleasing;
 }
