@@ -3,13 +3,23 @@
 
 String::String(const char* str) {
     if(str != 0) {
-        this->data = str;
+        int len = strlen(str);
+        char* newData = new char[len + 1];
+        strcpy(str, newData);
+        this->data = newData;
         this->length = strlen(str);
         return;
     }
 
-    this->data = new char[this->length + 1];
+    this->data = new char[1];
     this->length = 0;
+}
+
+String::String(int num) {
+    char* ibuf = new char[10];
+    int chars = itoa(num, ibuf, 10);
+    this->data = ibuf;
+    this->length = chars;
 }
 
 void String::append(int i) {

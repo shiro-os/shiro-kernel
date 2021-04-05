@@ -20,6 +20,7 @@
 #include "logic/EventEmitter.hpp"
 #include "io/hid/Keyboard.hpp"
 #include "io/hid/layouts/GermanKeyboardLayout.hpp"
+#include "logic/collections/List.hpp"
 
 extern "C"
 {
@@ -91,6 +92,7 @@ extern "C"
                 term->printLine(res);
             }
         }, (void*)ctx);
+
         doInterruptLoop();
 
         return 0;

@@ -32,7 +32,7 @@ void operator delete(void * p, unsigned int size)
 
 void MemoryMgmt::init(multiboot_info_t* mbi) {
     MemoryMgmt::mbi = mbi;
-    MemoryMgmt::memoryPages[0].startAddress = (void*)mbi->mem_lower;
+    MemoryMgmt::memoryPages[0].startAddress = (void*)mbi[1].mem_lower;
 }
 
 MemoryPageDetails MemoryMgmt::allocateMemory(unsigned long length) {

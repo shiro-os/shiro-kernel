@@ -8,6 +8,7 @@ private:
     int length;
 public:
     String(const char* str);
+    String(int str);
     ~String();
     int getLength();
     void append(const char* str);
