@@ -1,6 +1,7 @@
 #include "RTC.hpp"
 #include "PortIo.hpp"
 #include "../utils/kernelutils.hpp"
+#include "../utils/math.h"
 
 RTC* RTC::instance = 0;
 
@@ -41,10 +42,17 @@ void RTC::setFrequency(unsigned char frequency) {
     }
 
     unsigned char rate = frequency & 0x0F;
-    disable_interrupts();
     PortIo::writeToPort(0x70, 0x8A);
     unsigned char prevVal = PortIo::readFromPort(0x71);
     PortIo::writeToPort(0x70, 0x8A);
     PortIo::writeToPort(0x71, (prevVal & 0xF0) | rate);
-    enable_interrupts();
+    this->divider = frequency;
+}
+
+float RTC::getTickdelayMs() {
+    return RTC::getTickdelayMs(divider);
+}
+
+float RTC::getTickdelayMs(int divider) {
+    return 65535 / (pow(2, divider));
 }

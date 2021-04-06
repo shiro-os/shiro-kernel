@@ -3,24 +3,17 @@
 #include <stdint.h>
 
 #include "utils/multiboot_info.hpp"
-
 #include "io/Terminal.hpp"
-#include "io/SerialIo.hpp"
 #include "io/PortIo.hpp"
 #include "io/RTC.hpp"
 #include "io/MemoryMgmt.hpp"
-#include "shells/IShell.hpp"
-#include "shells/ComShell.hpp"
 #include "test/test.hpp"
 #include "utils/gdt.hpp"
 #include "utils/kernelutils.hpp"
-#include "utils/util.hpp"
 #include "interrupts/idt.hpp"
 #include "interrupts/interrupt_utils.hpp"
-#include "logic/EventEmitter.hpp"
 #include "io/hid/Keyboard.hpp"
-#include "io/hid/layouts/GermanKeyboardLayout.hpp"
-#include "logic/collections/List.hpp"
+#include "io/hid/layouts/Keys.h"
 
 extern "C"
 {
@@ -48,8 +41,7 @@ extern "C"
         disable_interrupts();
     }
 
-    int _entry(multiboot_info_t* mbi, unsigned int magic)
-    {
+    void init(multiboot_info_t* mbi) {
         volatile auto gdt = Gdt::setupGdt();
         idt_init();
         MemoryMgmt::init(mbi);
@@ -63,6 +55,11 @@ extern "C"
         enable_interrupt(12);
         RTC::getInstance()->setFrequency(13);
         RTC::getInstance()->enableIrq08();
+    }
+
+    int _entry(multiboot_info_t* mbi, unsigned int magic)
+    {
+        init(mbi);
 
         Terminal* ctx = new Terminal();
 
@@ -72,26 +69,13 @@ extern "C"
             ->setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
             ->printLine("[Shiro] Shiro Kernel initialized");
 
-        Keyboard::getInstance()->on("irq", [](void* thisObj, KeypressEvent event) {
-            GermanKeyboardLayout* deLayout = GermanKeyboardLayout::getInstance();
-            KeyMapping mapping = deLayout->getMapping(event.raw);
-
-            if(event.bIsPressing) return;
-
-            Terminal* term = (Terminal*)thisObj;
-            term->setBgColor(VGA_COLOR_BLUE);
-            term->clear();
-
-
-            if(mapping.mapped != 0 && mapping.label) {
-                term->printLine(mapping.label->getData());
+        enable_interrupts();
+        while(true) {
+            if(Keyboard::getInstance()->isPressed(KEY_A)) {
+                ctx->printLine("Homie");
             }
-            else {
-                char res[10];
-                itoa(event.raw, res, 10);
-                term->printLine(res);
-            }
-        }, (void*)ctx);
+            asm volatile("hlt");
+        }
 
         doInterruptLoop();
 

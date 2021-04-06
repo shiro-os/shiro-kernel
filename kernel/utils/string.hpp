@@ -16,6 +16,10 @@ public:
     bool equals(const char* str);
     bool equals(String str);
     const char* getData();
+    String* clone();
+
+    bool operator == (String other);
+    bool operator == (const char* other);
 };
 
 #endif

@@ -29,10 +29,13 @@ public:
     void enableIrq08();
     void onIrq08();
     void setFrequency(unsigned char frequency);
+    float getTickdelayMs();
+    static float getTickdelayMs(int divider);
 private:
     static RTC* instance;
     long currentTime;
     long currentTick;
+    unsigned char divider = 0;
 };
 
 #endif

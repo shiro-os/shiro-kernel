@@ -46,6 +46,23 @@ public:
         _elements[i] = value;
     }
 
+    void deleteAt(int iToDelete) {
+        if(iToDelete < 0) return;
+
+        T* newElements = new T[_length];
+
+        int newElementIndex = 0;
+        for(int i = 0; i < _count; i++) {
+            if(i == iToDelete) {
+                return;
+            }
+            newElements[newElementIndex++] = _elements[i];
+        }
+
+        delete[] _elements;
+        _elements = newElements;
+    }
+
     T elementAt(int i) {
         if(i < _count) {
             return _elements[i];
@@ -65,7 +82,8 @@ public:
         }
         return result;
     }
-private:
+
+protected:
     T* _elements;
     int _count;
     int _length;
