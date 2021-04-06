@@ -70,6 +70,7 @@ int itoa(int num, char* buf, int bufSize) {
     for(int curNum = num % 10; steps < bufSize && steps < digits && num > 0; steps++, curNum = (num = num / 10) % 10) {
         buf[digits - steps - 1] = curNum + 0x30;
     }
+    buf[digits] = '\0';
 
     return steps;
 }

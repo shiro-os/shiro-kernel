@@ -3,20 +3,17 @@
 #include <stdint.h>
 
 #include "utils/multiboot_info.hpp"
-
 #include "io/Terminal.hpp"
-#include "io/SerialIo.hpp"
 #include "io/PortIo.hpp"
 #include "io/RTC.hpp"
 #include "io/MemoryMgmt.hpp"
-#include "shells/IShell.hpp"
-#include "shells/ComShell.hpp"
 #include "test/test.hpp"
 #include "utils/gdt.hpp"
 #include "utils/kernelutils.hpp"
-#include "utils/util.hpp"
 #include "interrupts/idt.hpp"
 #include "interrupts/interrupt_utils.hpp"
+#include "io/hid/Keyboard.hpp"
+#include "io/hid/layouts/Keys.h"
 
 extern "C"
 {
@@ -44,11 +41,10 @@ extern "C"
         disable_interrupts();
     }
 
-    int _entry(multiboot_info_t* mbi, unsigned int magic)
-    {
+    void init(multiboot_info_t* mbi) {
         volatile auto gdt = Gdt::setupGdt();
-        MemoryMgmt::init(mbi);
         idt_init();
+        MemoryMgmt::init(mbi);
         // Initialize PIC: All Interrupts disabled by default
         PortIo::writeToPort(0x21, 0xFF);
         PortIo::writeToPort(0xA1, 0xFF);
@@ -56,49 +52,33 @@ extern "C"
         enable_interrupt(1);
         enable_interrupt(2);
         enable_interrupt(8);
-        RTC::setFrequency(13);
-        RTC::enableIrq08();
+        enable_interrupt(12);
+        RTC::getInstance()->setFrequency(13);
+        RTC::getInstance()->enableIrq08();
+    }
+
+    int _entry(multiboot_info_t* mbi, unsigned int magic)
+    {
+        init(mbi);
 
         Terminal* ctx = new Terminal();
-        SerialPort* serial = (new SerialPort(serialPort::COM1))
-            ->initSerial()
-            ->write((const unsigned char*)"[Shiro] Initialized COM1 Serial connection\r\n");
 
         ctx->setBgColor(vgaTerminalColor::VGA_COLOR_WHITE)
             ->setFgColor(vgaTerminalColor::VGA_COLOR_BLACK)
-            ->clear();
+            ->clear()
+            ->setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
+            ->printLine("[Shiro] Shiro Kernel initialized");
 
-        ctx->setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
-            ->printLine("[Shiro] Shiro Kernel initialized")
-            ->printLine("[Shiro] Starting self-check...");
-
-        if(testA20()) {
-            ctx->printLine("[Shiro] A20 Line set!");
-        } else {
-            ctx->setFgColor(vgaTerminalColor::VGA_COLOR_RED)
-                ->printLine("[Shiro] A20 Line not set!");
+        enable_interrupts();
+        while(true) {
+            if(Keyboard::getInstance()->isPressed(KEY_A)) {
+                ctx->printLine("Homie");
+            }
+            asm volatile("hlt");
         }
 
         doInterruptLoop();
 
-        char checkError[1024];
-        if(!Test::selfCheck(checkError)) {
-            ctx->setFgColor(vgaTerminalColor::VGA_COLOR_RED)
-                ->printLine("[Shiro] Self-Check failed! Error:")
-                ->printLine(checkError);
-            return 1;
-        } else {
-            ctx->setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
-                ->printLine("[Shiro] Self-Check succeeded!")
-                ->setFgColor(vgaTerminalColor::VGA_COLOR_BLACK);
-            ComShell* shell = new ComShell(serial);
-            ctx->printLine("[Shiro] Initialized Shell on COM1");
-            shell->writeLine("[Shiro] Initialized Shell on COM1");
-            shell->runShell();
-            delete shell;
-        }
-
-        delete serial;
         return 0;
     }
 }
