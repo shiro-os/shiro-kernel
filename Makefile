@@ -19,7 +19,9 @@ cppOutput = ./bin/kernel/kernel.o \
 		./bin/kernel/interrupts/idt.o \
 		./bin/kernel/interrupts/irq_handler.o \
 		./bin/kernel/interrupts/interrupt_utils.o \
-		./bin/kernel/logic/EventEmitter.o
+		./bin/kernel/logic/EventEmitter.o \
+		./bin/kernel/ui/implementations/TuiContainer.o \
+		./bin/kernel/ui/implementations/TuiObject.o
 
 cOutput = ./bin/kernel/utils/math.o
 

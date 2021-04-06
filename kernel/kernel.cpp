@@ -14,6 +14,7 @@
 #include "interrupts/interrupt_utils.hpp"
 #include "io/hid/Keyboard.hpp"
 #include "io/hid/layouts/Keys.h"
+#include "ui/tui.hpp"
 
 extern "C"
 {

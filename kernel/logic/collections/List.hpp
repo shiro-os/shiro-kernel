@@ -2,6 +2,7 @@
 #define __LIST_HPP_
 #include "../../utils/kernelutils.hpp"
 #include "../../utils/util.hpp"
+#include "../../io/MemoryMgmt.hpp"
 
 template <typename T>
 class List {
@@ -9,7 +10,7 @@ public:
     List(int initialLength = 32, int autoExpand = 0) {
         _length = initialLength;
         _count = 0;
-        _elements = new T[_length];
+        _elements = (T*)MemoryMgmt::allocateMemory(sizeof(T) * _length).startAddress;
         _autoExpand = autoExpand;
     }
 
@@ -25,7 +26,7 @@ public:
         if(_length == _count) {
             if(_autoExpand > 0) {
                 int newLength = _length + _autoExpand;
-                T* newElements = new T[newLength];
+                T* newElements = (T*)MemoryMgmt::allocateMemory(sizeof(T) * _length).startAddress;
                 memcpy((const char*)_elements, (char*)newElements, sizeof(T) * _length);
                 delete[] _elements;
                 _elements =  newElements;
