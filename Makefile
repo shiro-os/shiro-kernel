@@ -1,33 +1,32 @@
-cppOutput = ./bin/kernel/kernel.o \
-		./bin/kernel/io/Terminal.o \
-		./bin/kernel/utils/util.o \
-		./bin/kernel/utils/kernelutils.o \
-		./bin/kernel/utils/string.o \
-		./bin/kernel/utils/gdt.o \
-		./bin/kernel/io/PortIo.o \
-		./bin/kernel/io/SerialIo.o \
-		./bin/kernel/io/RTC.o \
-		./bin/kernel/io/MemoryMgmt.o \
-		./bin/kernel/io/hid/PSController.o \
-		./bin/kernel/io/hid/Keyboard.o \
-		./bin/kernel/io/hid/layouts/IKeyboardLayout.o \
-		./bin/kernel/io/hid/layouts/GermanKeyboardLayout.o \
-		./bin/kernel/shells/ComShell.o \
-		./bin/kernel/shells/ShellCommandExecutor.o \
-		./bin/kernel/test/assert.o \
-		./bin/kernel/test/test.o \
-		./bin/kernel/interrupts/idt.o \
-		./bin/kernel/interrupts/irq_handler.o \
-		./bin/kernel/interrupts/interrupt_utils.o \
-		./bin/kernel/logic/EventEmitter.o \
-		./bin/kernel/ui/implementations/TuiContainer.o \
-		./bin/kernel/ui/implementations/TuiObject.o
+cppOutput = ./bin/kernel/sources/kernel.o \
+		./bin/kernel/sources/io/Terminal.o \
+		./bin/kernel/sources/utils/util.o \
+		./bin/kernel/sources/utils/kernelutils.o \
+		./bin/kernel/sources/utils/string.o \
+		./bin/kernel/sources/utils/gdt.o \
+		./bin/kernel/sources/io/PortIo.o \
+		./bin/kernel/sources/io/SerialIo.o \
+		./bin/kernel/sources/io/RTC.o \
+		./bin/kernel/sources/io/MemoryMgmt.o \
+		./bin/kernel/sources/io/hid/PSController.o \
+		./bin/kernel/sources/io/hid/Keyboard.o \
+		./bin/kernel/sources/io/hid/layouts/IKeyboardLayout.o \
+		./bin/kernel/sources/io/hid/layouts/GermanKeyboardLayout.o \
+		./bin/kernel/sources/shells/ComShell.o \
+		./bin/kernel/sources/shells/ShellCommandExecutor.o \
+		./bin/kernel/sources/test/assert.o \
+		./bin/kernel/sources/test/test.o \
+		./bin/kernel/sources/interrupts/idt.o \
+		./bin/kernel/sources/interrupts/irq_handler.o \
+		./bin/kernel/sources/interrupts/interrupt_utils.o \
+		./bin/kernel/sources/ui/TuiObject.o \
+		./bin/kernel/sources/ui/TuiContainer.o
 
-cOutput = ./bin/kernel/utils/math.o
+cOutput = ./bin/kernel/sources/utils/math.o
 
-asmOutput = ./bin/kernel/kernel_ep.oasm \
-	./bin/kernel/utils/util.oasm \
-	./bin/kernel/interrupts/idt.oasm
+asmOutput = ./bin/kernel/sources/kernel_ep.oasm \
+	./bin/kernel/sources/utils/util.oasm \
+	./bin/kernel/sources/interrupts/idt.oasm
 
 
 
@@ -41,11 +40,11 @@ isodir:
 
 $(cppOutput):
 	mkdir -p $(@D)
-	g++ -g -m32 -c "$(@:bin/%.o=%.cpp)" -o "$@" -ffreestanding -fno-exceptions -fno-rtti -finline-functions
+	g++ -g -m32 -c "$(@:bin/%.o=%.cpp)" -o "$@" -ffreestanding -fno-exceptions -fno-rtti -finline-functions -Ikernel/headers/
 
 $(cOutput):
 	mkdir -p $(@D)
-	g++ -g -m32 -c "$(@:bin/%.o=%.c)" -o "$@" -ffreestanding -fno-exceptions -fno-rtti -finline-functions
+	g++ -g -m32 -c "$(@:bin/%.o=%.c)" -o "$@" -ffreestanding -fno-exceptions -fno-rtti -finline-functions -Ikernel/headers/
 
 $(asmOutput):
 	mkdir -p $(@D)
@@ -61,5 +60,5 @@ $(asmOutput):
 
 
 afterBuild: ./bin/shiro.iso
-	rm -rf ./bin/kernel
+	rm -rf ./bin/sources
 	rm -rf ./isodir
