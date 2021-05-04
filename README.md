@@ -29,7 +29,7 @@ We want to use as few C++ as possible and bind [v8](https://v8.dev) on Kernel le
 
 ## :wrench: Build
 
--- Comming Soon --
+-- Coming Soon --
 
 For now you only need the following tools:
 
