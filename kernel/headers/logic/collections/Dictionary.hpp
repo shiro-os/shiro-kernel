@@ -67,7 +67,7 @@ private:
 
     int getNodeIndexByKey(TKey key) {
         for(int i = 0; i < this->_count; i++) {
-            if(this->_elements[i]->key == key) return this->_elements[i];
+            if(this->_elements[i]->key == key) return i;
         }
         return -1;
     }
