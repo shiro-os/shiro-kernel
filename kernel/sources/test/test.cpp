@@ -1,3 +1,5 @@
+#include "build-settings.h"
+#if RUN_TESTS == true
 #include "test/test.hpp"
 #include "test/assert.hpp"
 #include "utils/string.hpp"
@@ -130,3 +132,4 @@ bool Test::selfCheck(char* errorMsg) {
 
     return true;
 }
+#endif

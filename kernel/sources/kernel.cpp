@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "build-settings.h"
 #include "utils/multiboot_info.hpp"
 #include "io/Terminal.hpp"
 #include "io/PortIo.hpp"
@@ -61,12 +62,15 @@ extern "C"
     int _entry(multiboot_info_t* mbi, unsigned int magic)
     {
         init(mbi);
+
+        #if RUN_TESTS == true
         char* errorMessage = new char[255];
         Test::selfCheck(errorMessage);
 
         if(strlen(errorMessage) != 0) {
             kernel_panic(errorMessage);
         }
+        #endif
 
         Terminal* ctx = new Terminal();
 
@@ -74,7 +78,6 @@ extern "C"
             ->setFgColor(vgaTerminalColor::VGA_COLOR_BLACK)
             ->clear()
             ->setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
-            ->printLine("Self-Check successfully completed")
             ->printLine("Shiro Kernel initialized");
 
         enable_interrupts();
