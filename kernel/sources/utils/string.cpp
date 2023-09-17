@@ -32,7 +32,7 @@ void String::append(int i) {
 
 void String::append(const char* str) {
     int appendLen = strlen(str);
-    int newLen = this->length + appendLen;
+    int newLen = this->length + appendLen + 1;
     char* newData = new char[newLen];
     strcpy(this->data, newData);
     strcpy(str, newData + this->length);
