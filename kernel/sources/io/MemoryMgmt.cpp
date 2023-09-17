@@ -36,7 +36,7 @@ void MemoryMgmt::init(multiboot_info_t* mbi) {
 }
 
 MemoryPageDetails MemoryMgmt::allocateMemory(unsigned long length) {
-    MemoryPageDetails* mpd = MemoryMgmt::getFistEmptyPage(length);
+    MemoryPageDetails* mpd = MemoryMgmt::getFirstEmptyPage(length);
     if(mpd == 0) {
         kernel_panic("Failed to find empty memory page");
     }
@@ -45,6 +45,7 @@ MemoryPageDetails MemoryMgmt::allocateMemory(unsigned long length) {
         for(int i = 0; i < MEM_PAGE_DETAILS_SIZE; i++) {
             MemoryPageDetails pageDetails = MemoryMgmt::memoryPages[i];
             if(pageDetails.startAddress == 0) break;
+
             if(pageDetails.startAddress > lastDetails.startAddress) {
                 lastDetails = pageDetails;
             }
@@ -56,7 +57,7 @@ MemoryPageDetails MemoryMgmt::allocateMemory(unsigned long length) {
     return *mpd;
 }
 
-MemoryPageDetails* MemoryMgmt::getFistEmptyPage(unsigned long minLength) {
+MemoryPageDetails* MemoryMgmt::getFirstEmptyPage(unsigned long minLength) {
     for(int i = 0; i < MEM_PAGE_DETAILS_SIZE; i++) {
         MemoryPageDetails pageDetails = MemoryMgmt::memoryPages[i];
         if(!pageDetails.allocated && (pageDetails.length == 0 || pageDetails.length >= minLength)) {

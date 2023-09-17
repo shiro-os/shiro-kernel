@@ -42,5 +42,5 @@ private:
     bool deleteNode(LinkedNode<T>* node);
 };
 
-#include "LinkedList.cpp"
+#include "../sources/logic/collections/LinkedList.cpp"
 #endif

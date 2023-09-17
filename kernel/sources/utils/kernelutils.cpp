@@ -14,7 +14,7 @@ void kernel_panic(const char* errmsg) {
 
     delete ctx;
 
-    while(true);
+    while(true) {}
 }
 
 void enable_interrupt(unsigned char interrupt) {

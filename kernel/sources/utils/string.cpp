@@ -6,8 +6,9 @@ String::String(const char* str) {
         int len = strlen(str);
         char* newData = new char[len + 1];
         strcpy(str, newData);
-        this->data = newData;
         this->length = strlen(str);
+        newData[this->length] = '\0';
+        this->data = newData;
         return;
     }
 
@@ -35,7 +36,7 @@ void String::append(const char* str) {
     char* newData = new char[newLen];
     strcpy(this->data, newData);
     strcpy(str, newData + this->length);
-    newData[newLen + 1] = '\0';
+    newData[newLen] = '\0';
 
     delete this->data;
     this->data = newData;

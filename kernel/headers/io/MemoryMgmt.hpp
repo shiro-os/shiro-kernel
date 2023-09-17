@@ -18,7 +18,7 @@ public:
     static void init(multiboot_info_t* mbi);
 private:
     static multiboot_info_t* mbi;
-    static MemoryPageDetails* getFistEmptyPage(unsigned long minLength);
+    static MemoryPageDetails* getFirstEmptyPage(unsigned long minLength);
 };
 
 #endif

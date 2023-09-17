@@ -61,6 +61,12 @@ extern "C"
     int _entry(multiboot_info_t* mbi, unsigned int magic)
     {
         init(mbi);
+        char* errorMessage = new char[255];
+        Test::selfCheck(errorMessage);
+
+        if(strlen(errorMessage) != 0) {
+            kernel_panic(errorMessage);
+        }
 
         Terminal* ctx = new Terminal();
 
@@ -68,9 +74,11 @@ extern "C"
             ->setFgColor(vgaTerminalColor::VGA_COLOR_BLACK)
             ->clear()
             ->setFgColor(vgaTerminalColor::VGA_COLOR_GREEN)
-            ->printLine("[Shiro] Shiro Kernel initialized");
+            ->printLine("Self-Check successfully completed")
+            ->printLine("Shiro Kernel initialized");
 
         enable_interrupts();
+
         while(true) {
             if(Keyboard::getInstance()->isPressed(KEY_A)) {
                 ctx->printLine("Homie");
