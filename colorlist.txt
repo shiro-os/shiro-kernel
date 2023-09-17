@@ -1,17 +1,17 @@
-Colors: 
-0 Black; 
-1 Blue;
-2 Green; 
-3 Aqua; 
-4 Red; 
-5 Pink; 
-6 Brown; 
-7 Light Gray;
-8 Dark Gray; 
-9 Light Blue; 
-A Light Green; 
-B Light Aqua; 
-C Light Red; 
-D Light Pink; 
-E Yellow; 
-F White;
+Colors:
+    0x0 Black;
+    0x1 Blue;
+    0x2 Green;
+    0x3 Aqua;
+    0x4 Red;
+    0x5 Pink;
+    0x6 Brown;
+    0x7 Light Gray;
+    0x8 Dark Gray;
+    0x9 Light Blue;
+    0xA Light Green;
+    0xB Light Aqua;
+    0xC Light Red;
+    0xD Light Pink;
+    0xE Yellow;
+    0xF White;
