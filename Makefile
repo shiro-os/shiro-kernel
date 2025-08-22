@@ -40,11 +40,11 @@ isodir:
 
 $(cppOutput):
 	mkdir -p $(@D)
-	g++ -g -m32 -c "$(@:bin/%.o=%.cpp)" -o "$@" -ffreestanding -fno-exceptions -fno-rtti -finline-functions -Ikernel/headers/
+	g++ -g -m32 -c "$(@:bin/%.o=%.cpp)" -o "$@" -ffreestanding -fno-exceptions -fno-rtti -finline-functions -fno-stack-protector -Ikernel/headers/
 
 $(cOutput):
 	mkdir -p $(@D)
-	g++ -g -m32 -c "$(@:bin/%.o=%.c)" -o "$@" -ffreestanding -fno-exceptions -fno-rtti -finline-functions -Ikernel/headers/
+	g++ -g -m32 -c "$(@:bin/%.o=%.c)" -o "$@" -ffreestanding -fno-exceptions -fno-rtti -finline-functions -fno-stack-protector -Ikernel/headers/
 
 $(asmOutput):
 	mkdir -p $(@D)
